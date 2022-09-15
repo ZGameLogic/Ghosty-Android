@@ -1,5 +1,6 @@
 package com.zgamelogic.ghosty;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,6 +21,11 @@ public class GhostUnitTest {
         evidence.add("Ghost orbs");
         evidence.add("EMF Level 5");
         ben = new Ghost("Ben", "A fine spooky ghost", 1, evidence);
+    }
+
+    @After
+    public void afterEach(){
+        ben = null;
     }
 
     @Test
