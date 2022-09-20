@@ -1,5 +1,9 @@
 package com.zgamelogic.ghosty.data;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -14,11 +18,34 @@ public class Ghost {
     private int id;
     private LinkedList<String> evidence;
 
+    /**
+     * Construct a ghost with a name, description, id, and evidence
+     * @param name Name of the ghost
+     * @param description Description of ghost
+     * @param id ID of ghost
+     * @param evidence evidence of ghost
+     */
     public Ghost(String name, String description, int id, LinkedList<String> evidence) {
         this.name = name;
         this.description = description;
         this.id = id;
         this.evidence = evidence;
+    }
+
+    /**
+     * Construct a ghost using a JSON object
+     * @param json json object with keys: id (int), name (string), description (string), evidence (string array)
+     * @throws JSONException
+     */
+    public Ghost(JSONObject json) throws JSONException {
+        id = json.getInt("id");
+        name = json.getString("name");
+        description = json.getString("description");
+        JSONArray jsonEvidences = json.getJSONArray("evidence");
+        evidence = new LinkedList<>();
+        for(int i = 0; i < jsonEvidences.length(); i++){
+            evidence.add(jsonEvidences.getString(i));
+        }
     }
 
     /**
@@ -39,6 +66,10 @@ public class Ghost {
      */
     public boolean isValid(Collection<String> currentEvidence){
         return evidence.containsAll(currentEvidence);
+    }
+
+    public String toString(){
+        return name;
     }
 
     /**

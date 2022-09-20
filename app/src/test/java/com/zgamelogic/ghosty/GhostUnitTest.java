@@ -1,8 +1,11 @@
 package com.zgamelogic.ghosty;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
@@ -26,6 +29,33 @@ public class GhostUnitTest {
     @After
     public void afterEach(){
         ben = null;
+    }
+
+    @Test(expected = JSONException.class)
+    public void jsonConstructorNotWorking() throws JSONException {
+        JSONObject jsonGhost = new JSONObject("{\"Seconds to kill\", 15}");
+        Ghost ghost = new Ghost(jsonGhost);
+    }
+
+    @Test
+    public void jsonConstructorWorks() throws JSONException {
+        JSONObject jsonGhost = new JSONObject("{\"evidence\": [" +
+                "\"Fingerprints\"," +
+                "\"Freezing Temperatures\"," +
+                "\"Ghost Writing\"" +
+                "]," +
+                "\"name\": \"Spooky ghost\"," +
+                "\"description\": \"This is a description\"," +
+                "\"id\": 4" +
+                "}");
+        try {
+            Ghost ghost = new Ghost(jsonGhost);
+            assertEquals(ghost.getName(), "Spooky ghost");
+            assertEquals(ghost.getDescription(), "This is a description");
+            assertEquals(ghost.getId(), 4);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Test
