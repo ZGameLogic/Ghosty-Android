@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+    android:id="@+id/evidenceView1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:text="Investigation1"
+    android:textAlignment="center"
+    android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/evidenceView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/evidenceView1"
+        android:text="Investigation2"
+        android:textAlignment="center"
+        android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/evidenceView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Investigation3"
+        android:layout_below="@id/evidenceView2"
+        android:textAlignment="center"
+        android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/evidenceView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Investigation4"
+        android:layout_below="@id/evidenceView3"
+        android:textAlignment="center"
+        android:textSize="34sp" />
+
+
+
+
+
+
+
+</RelativeLayout>

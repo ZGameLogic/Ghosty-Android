@@ -25,6 +25,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // This is necessary fix to avoid this error: :app:transformResourcesWithMergeJavaResForDebug
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 dependencies {
@@ -40,3 +45,6 @@ dependencies {
 
     testImplementation 'org.json:json:20140107'
 }
+
+
+
