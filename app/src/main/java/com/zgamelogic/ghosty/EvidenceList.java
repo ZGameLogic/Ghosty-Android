@@ -1,16 +1,21 @@
 package com.zgamelogic.ghosty;
 
-public class EvidenceFilter {
-    //This holds the evidence name for all of the toggles
-    String evidenceFilter;
+/**
+ * Purpose: stores a string for one of the evidence toggles.
+ * evidenceText(global) is generally named so that any specified evidence string can be stored.
+ */
+public class EvidenceList {
+    //This holds the evidence name for one of the toggles
+    String evidenceText;
 
-    EvidenceList(String evidenceFilter)
-
-//This is local
+    /**
+     * Constructor below
+     * @param evidenceFilter string that identifies the accompanying toggle.
+     */
+    public EvidenceList(String evidenceFilter)
     {
         //this is assigning local to global
         //Local has priority over global.
-        this.evidenceFilter = evidenceFilter; //global = Local
-
+        this.evidenceText = evidenceFilter; //global = Local
     }
 }

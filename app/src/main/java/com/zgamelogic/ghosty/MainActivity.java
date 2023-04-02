@@ -53,7 +53,11 @@ public class MainActivity<dataSet> extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    //Sample data for RecyclerView
+    /**
+     * Sample data for RecyclerView
+     * Each ListItem is populated with a number of string/TextView's defined in view_item.xml?
+     * @return
+     */
     private List<ListItem> getData()
     {
         List<ListItem> list = new ArrayList<>();

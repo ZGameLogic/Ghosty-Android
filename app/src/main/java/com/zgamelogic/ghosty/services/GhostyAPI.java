@@ -10,10 +10,14 @@ public abstract class GhostyAPI {
 
     public LinkedList<Ghost> getGhosts(){
 
+
+        return new LinkedList<Ghost>();
     }
 
     public LinkedList<String> getEvidences(){
 
+
+        return new LinkedList<String>();
     }
 
 

@@ -9,6 +9,7 @@ import org.w3c.dom.Text;
 
     // ViewHolder code for RecyclerView
 
+
 public class ViewHolder extends RecyclerView.ViewHolder {
     TextView ghostEvidence1;
     TextView ghostEvidence2;

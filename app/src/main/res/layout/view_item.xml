@@ -3,7 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!--evidenceView represents the TextView for text for all toggles-->
+    <TextView
+        android:id="@+id/evidenceView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="evidence view"
+        android:textAlignment="center"
+        android:textSize="34sp" />
 
+    <!--Rename below evidenceViews when working on ghost evidence holders/ViewHolder-->
     <TextView
     android:id="@+id/evidenceView1"
     android:layout_width="match_parent"
