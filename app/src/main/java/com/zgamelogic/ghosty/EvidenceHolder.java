@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class EvidenceHolder extends RecyclerView.ViewHolder{
 
+
     TextView toggleName;
     View view;
     //Creates both a TextView and a View.
@@ -23,5 +24,7 @@ public class EvidenceHolder extends RecyclerView.ViewHolder{
 
         view = itemView;
     }
+
+
 }
 //Need to add 'framework' for future toggle operations.

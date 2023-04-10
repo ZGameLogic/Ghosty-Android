@@ -13,6 +13,8 @@
         android:textAlignment="center"
         android:textSize="34sp" />
 
+
+
     <!--Rename below evidenceViews when working on ghost evidence holders/ViewHolder-->
     <TextView
     android:id="@+id/evidenceView1"

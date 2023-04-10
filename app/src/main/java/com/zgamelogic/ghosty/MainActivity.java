@@ -44,6 +44,18 @@ public class MainActivity<dataSet> extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(MainActivity.this));
+
+        //Example of a switch button implementation
+        SwitchLayoutBinding binding = SwitchLayoutBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        binding.materialSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // The switch is checked.
+            } else {
+                // The switch isn't checked.
+            }
+        });
     }
 
     @Override

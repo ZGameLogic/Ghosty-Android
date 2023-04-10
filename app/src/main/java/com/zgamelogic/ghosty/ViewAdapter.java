@@ -56,14 +56,9 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewHolder> {
                      final int position)
     {
         int index = viewHolder.getAdapterPosition();
-        viewHolder.ghostEvidence1
-                .setText(list.get(position).evidence1);
-        viewHolder.ghostEvidence2
-                .setText(list.get(position).evidence2);
-        viewHolder.ghostEvidence3
-                .setText(list.get(position).evidence3);
-        viewHolder.ghostEvidence4
-                .setText(list.get(position).evidence4);
+        viewHolder.evidenceText
+                .setText(list.get(position).evidenceFilter);
+
 
         viewHolder.view.setOnClickListener(new View.OnClickListener() {
             @Override
