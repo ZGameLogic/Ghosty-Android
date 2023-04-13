@@ -6,25 +6,24 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * purpose: represents the XML of a single list item.
+ * Purpose: represents the XML of a single list item from the evidence list.
  */
 public class EvidenceHolder extends RecyclerView.ViewHolder{
 
-
-    TextView toggleName;
-    View view;
+    public TextView toggleName;
+    public View view;
     //Creates both a TextView and a View.
     //itemView is local and view is global.
     //Placeholder for 'Toggle switch.'
 
     public EvidenceHolder(View itemView) {
-        super(itemView);
-            //What is super for?
-        toggleName = (TextView)itemView.findViewById(R.id.evidenceView);
-
+        super(itemView); // Call parent constructor
+        toggleName = (TextView)itemView.findViewById(R.id.evidenceListString);
         view = itemView;
+
+        // Make views visible
+        toggleName.setVisibility(View.VISIBLE);
+        view.setVisibility(View.VISIBLE);
     }
-
-
 }
 //Need to add 'framework' for future toggle operations.
