@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:text="evidence view"
         android:textAlignment="center"
-        android:textSize="34sp"
+        android:textSize="16sp"
         android:visibility="gone"/>
 
     <!--
@@ -30,39 +30,42 @@
         android:layout_alignParentTop="true"
         android:text="evidence view"
         android:textAlignment="center"
-        android:textSize="34sp"
+        android:textSize="24sp"
         android:visibility="gone"/>
 
     <!-- Three textviews specifying this ghost's evidence types -->
-    <TextView
-        android:id="@+id/ghostEv1"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ghostListName"
-        android:layout_alignParentStart="true"
-        android:text="ghost evidence 1"
-        android:textAlignment="center"
-        android:textSize="34sp"
-        android:visibility="gone"/>
-    <TextView
-        android:id="@+id/ghostEv2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ghostListName"
-        android:layout_toRightOf="@+id/ghostEv1"
-        android:text="ghost evidence 2"
-        android:textAlignment="center"
-        android:textSize="34sp"
-        android:visibility="gone"/>
-    <TextView
-        android:id="@+id/ghostEv3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ghostListName"
-        android:layout_toRightOf="@+id/ghostEv2"
-        android:text="ghost evidence 3"
-        android:textAlignment="center"
-        android:textSize="34sp"
-        android:visibility="gone"/>
+        android:id="@+id/ghostEvRow"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/ghostEv1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ghost evidence 1"
+            android:textAlignment="center"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/ghostEv2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ghost evidence 2"
+            android:textAlignment="center"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/ghostEv3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ghost evidence 3"
+            android:textAlignment="center"
+            android:textSize="20sp"/>
+    </LinearLayout>
 
 </RelativeLayout>

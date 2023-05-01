@@ -1,5 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Evidence"
+        android:textAlignment="center"
+        android:textSize="34sp"/>
+
+    <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:layout_marginTop="1sp"
+        android:layout_marginBottom="1sp"
+        android:background="#FFFFFF"
+        android:overScrollMode="never"
+        tools:context=".MainActivity" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:nestedScrollingEnabled="false"
+            android:id="@+id/evidenceRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
+    </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="Ghosts"
+        android:textAlignment="center"
+        android:textSize="34sp"/>
+
+    <androidx.core.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:layout_marginTop="1sp"
+        android:layout_marginBottom="1sp"
+        android:background="#FFFFFF"
+        android:overScrollMode="never"
+        tools:context=".MainActivity" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:nestedScrollingEnabled="false"
+            android:id="@+id/ghostRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:overScrollMode="never" />
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
+<!--
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,12 +80,34 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Evidence"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:nestedScrollingEnabled="false"
-            android:id="@+id/recyclerView"
+            android:id="@+id/evidenceRecyclerView"
             android:layout_width="match_parent"
-            android:overScrollMode="never"
-            android:layout_height="wrap_content"/>
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:overScrollMode="never" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Ghosts"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:nestedScrollingEnabled="false"
+            android:id="@+id/ghostRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:overScrollMode="never" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
+-->
