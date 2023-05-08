@@ -8,6 +8,8 @@ import android.util.Pair;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,7 +34,31 @@ public class MainActivity<dataSet> extends AppCompatActivity {
         listener = new OnClickListener() {
             @Override
             public void onClick(View view){
+                /*
+                TextView test1;
+                test1 = (TextView) view;
                 Toast.makeText(MainActivity.this,"This View Was Clicked",Toast.LENGTH_LONG).show();
+                */
+                //view is RelativeLayout
+                //Fix spacing between toggles and evidence text - viewItem.xml and EvidenceList
+                //After merge, dynamic updating of respective lists in response to toggling a switch
+
+                Switch test = (Switch) findViewById(R.id.simpleSwitchList);
+
+
+            /*public void onClick(View view){
+                Toast.makeText(MainActivity.this,"This View Was Clicked",Toast.LENGTH_LONG).show();
+
+                //Change the below to use onClick to make the toggle switch
+                //What is the view and how to get switch information from view
+                String statusSwitch1;
+
+                if (testSwitch.isChecked())
+                    statusSwitch1 = testSwitch.getTextOn().toString();
+                else
+                    statusSwitch1 = testSwitch.getTextOff().toString();
+                Toast.makeText(getApplicationContext(), "testSwitch: " + statusSwitch1, Toast.LENGTH_LONG).show();
+            }*/
             }
         };
         adapter = new EvidenceViewAdapter(evidenceListItems, getApplication(),listener);
@@ -41,15 +67,15 @@ public class MainActivity<dataSet> extends AppCompatActivity {
 
         //Example of a switch button implementation
         /**SwitchLayoutBinding binding = SwitchLayoutBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+         setContentView(binding.getRoot());
 
-        binding.materialSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                // The switch is checked.
-            } else {
-                // The switch isn't checked.
-            }
-        });*/
+         binding.materialSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+         if (isChecked) {
+         // The switch is checked.
+         } else {
+         // The switch isn't checked.
+         }
+         });*/
     }
 
     @Override
