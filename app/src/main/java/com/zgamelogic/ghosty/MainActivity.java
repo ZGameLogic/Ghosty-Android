@@ -18,9 +18,10 @@ import java.util.List;
 public class MainActivity<dataSet> extends AppCompatActivity {
 
 
-    EvidenceViewAdapter adapter;
-    RecyclerView recyclerView;
-    OnClickListener listener;
+    EvidenceViewAdapter adapterE;
+    GhostViewAdapter adapterG;
+    RecyclerView evRecyclerView, ghostRecyclerView;
+    OnClickListener evListener, ghostListener;
 
     @Override
     //
@@ -28,54 +29,33 @@ public class MainActivity<dataSet> extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<EvidenceList> evidenceListItems = getEvidenceTestData();
+        ArrayList<EvidenceList> evidenceListItems = getEvidenceListData();
+        ArrayList<GhostList> ghostListItems = getGhostListData();
 
-        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        listener = new OnClickListener() {
+        // Create evidence list in investigation view
+        evRecyclerView = (RecyclerView)findViewById(R.id.evidenceRecyclerView);
+        evListener = new OnClickListener() {
             @Override
             public void onClick(View view){
-                /*
-                TextView test1;
-                test1 = (TextView) view;
-                Toast.makeText(MainActivity.this,"This View Was Clicked",Toast.LENGTH_LONG).show();
-                */
-                //view is RelativeLayout
-                //Fix spacing between toggles and evidence text - viewItem.xml and EvidenceList
-                //After merge, dynamic updating of respective lists in response to toggling a switch
-
+                Toast.makeText(MainActivity.this,"Ev list view was clicked",Toast.LENGTH_SHORT).show();
                 Switch test = (Switch) findViewById(R.id.simpleSwitchList);
-
-
-            /*public void onClick(View view){
-                Toast.makeText(MainActivity.this,"This View Was Clicked",Toast.LENGTH_LONG).show();
-
-                //Change the below to use onClick to make the toggle switch
-                //What is the view and how to get switch information from view
-                String statusSwitch1;
-
-                if (testSwitch.isChecked())
-                    statusSwitch1 = testSwitch.getTextOn().toString();
-                else
-                    statusSwitch1 = testSwitch.getTextOff().toString();
-                Toast.makeText(getApplicationContext(), "testSwitch: " + statusSwitch1, Toast.LENGTH_LONG).show();
-            }*/
             }
         };
-        adapter = new EvidenceViewAdapter(evidenceListItems, getApplication(),listener);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        adapterE = new EvidenceViewAdapter(evidenceListItems, getApplication(), evListener);
+        evRecyclerView.setAdapter(adapterE);
+        evRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
-        //Example of a switch button implementation
-        /**SwitchLayoutBinding binding = SwitchLayoutBinding.inflate(getLayoutInflater());
-         setContentView(binding.getRoot());
-
-         binding.materialSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-         if (isChecked) {
-         // The switch is checked.
-         } else {
-         // The switch isn't checked.
-         }
-         });*/
+        // Create ghost list in investigation view
+        ghostRecyclerView = (RecyclerView)findViewById(R.id.ghostRecyclerView);
+        ghostListener = new OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Toast.makeText(MainActivity.this,"Ghost list view was clicked",Toast.LENGTH_SHORT).show();
+            }
+        };
+        adapterG = new GhostViewAdapter(ghostListItems, getApplication(), ghostListener);
+        ghostRecyclerView.setAdapter(adapterG);
+        ghostRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 
     @Override
@@ -86,11 +66,11 @@ public class MainActivity<dataSet> extends AppCompatActivity {
     }
 
     /**
-     * Sample evidence list data for RecyclerView
-     * Each EvidenceList object is populated with a number of string/TextView's defined in view_item.xml?
-     * @return Arraylist<EvidenceList> containing testing data for evidence list
+     * Get information for evidence list data for RecyclerView
+     * Each EvidenceList object is populated with a number of string/TextView's defined in view_item.xml
+     * @return Arraylist<EvidenceList> containing data for evidence list
      */
-    private ArrayList<EvidenceList> getEvidenceTestData()
+    private ArrayList<EvidenceList> getEvidenceListData()
     {
         ArrayList<EvidenceList> list = new ArrayList<EvidenceList>();
         for (int i = 0; i < 20; i++) {
@@ -101,12 +81,17 @@ public class MainActivity<dataSet> extends AppCompatActivity {
 
     /**
      * Sample ghosts list data for RecyclerView
-     * Each GhostList object is populated with a number of string/TextView's defined in view_item.xml?
-     * @return Arraylist<GhostList> containing testing data for ghost list
+     * Each GhostList object is populated with a number of string/TextView's defined in view_item.xml
+     * @return Arraylist<GhostList> containing data for ghost list
      */
-    private ArrayList<EvidenceList> getGhostTestData()
+    private ArrayList<GhostList> getGhostListData()
     {
-        ArrayList<EvidenceList> list = new ArrayList<EvidenceList>();
+        ArrayList<GhostList> list = new ArrayList<GhostList>();
+        list.add(new GhostList("Brandon", "Pointers", "None", "Mango juice"));
+        list.add(new GhostList("Jason", "Tom Skilling", "Amouranth", "Milk"));
+        list.add(new GhostList("Rob", "Teeth", "Vodka", "Sandshrew"));
+        list.add(new GhostList("Ben", "Java compiler", "Hearthstone", "Kenobi"));
+        list.add(new GhostList("Reagan", "World's largest wealth gap", "Drug epidemic", "Corn syrup"));
         return list;
     }
 }
