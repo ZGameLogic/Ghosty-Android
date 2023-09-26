@@ -32,20 +32,8 @@ public class Ghost {
         this.evidence = evidence;
     }
 
-    /**
-     * Construct a ghost using a JSON object
-     * @param json json object with keys: id (int), name (string), description (string), evidence (string array)
-     * @throws JSONException
-     */
-    public Ghost(JSONObject json) throws JSONException {
-        id = json.getInt("id");
-        name = json.getString("name");
-        description = json.getString("description");
-        JSONArray jsonEvidences = json.getJSONArray("evidence");
+    public Ghost(){
         evidence = new LinkedList<>();
-        for(int i = 0; i < jsonEvidences.length(); i++){
-            evidence.add(jsonEvidences.getString(i));
-        }
     }
 
     /**

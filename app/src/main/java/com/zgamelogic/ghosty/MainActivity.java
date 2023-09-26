@@ -4,14 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Pair;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.zgamelogic.ghosty.data.Ghost;
+import com.zgamelogic.ghosty.services.GhostyAPI;
+
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity<dataSet> extends AppCompatActivity {
 
@@ -29,6 +31,8 @@ public class MainActivity<dataSet> extends AppCompatActivity {
 
         ArrayList<EvidenceList> evidenceListItems = getEvidenceListData();
         ArrayList<GhostList> ghostListItems = getGhostListData();
+
+        Log.i("GhostyAPI", ghostListItems.size() + "");
 
         // Create evidence list in investigation view
         evRecyclerView = (RecyclerView)findViewById(R.id.evidenceRecyclerView);
@@ -69,7 +73,7 @@ public class MainActivity<dataSet> extends AppCompatActivity {
      */
     private ArrayList<EvidenceList> getEvidenceListData()
     {
-        ArrayList<EvidenceList> list = new ArrayList<EvidenceList>();
+        ArrayList<EvidenceList> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             list.add(new EvidenceList("This is evidence item ".concat(Integer.toString(i))));
         }
@@ -83,12 +87,23 @@ public class MainActivity<dataSet> extends AppCompatActivity {
      */
     private ArrayList<GhostList> getGhostListData()
     {
-        ArrayList<GhostList> list = new ArrayList<GhostList>();
-        list.add(new GhostList("Brandon", "Pointers", "None", "Mango juice"));
-        list.add(new GhostList("Jason", "Tom Skilling", "Amouranth", "Milk"));
-        list.add(new GhostList("Rob", "Teeth", "Vodka", "Sandshrew"));
-        list.add(new GhostList("Ben", "Java compiler", "Hearthstone", "Kenobi"));
-        list.add(new GhostList("Reagan", "World's largest wealth gap", "Drug epidemic", "Corn syrup"));
+        ArrayList<GhostList> list = new ArrayList<>();
+        GhostyAPI.getGhosts(ghosts -> {
+            for(Ghost ghost: ghosts){
+                Log.i("GhostyAPI", "We read: " + ghost.getName());
+                list.add(new GhostList(ghost));
+            }
+            new Runnable() {
+                @Override
+                public void run() {
+                    if (adapterG != null) {
+                        adapterG.notifyDataSetChanged();
+                        Log.i("GhostyAPI", "we notified");
+                    } else {
+                        Log.i("GhostyAPI", "we didnt notified");
+                    }
+                }};
+        }).start();
         return list;
     }
 }

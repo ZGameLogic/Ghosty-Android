@@ -1,5 +1,7 @@
 package com.zgamelogic.ghosty;
 
+import com.zgamelogic.ghosty.data.Ghost;
+
 /**
  * Purpose: stores the information that will be displayed in a single item in
  * the ghost list.
@@ -24,5 +26,12 @@ public class GhostList {
         this.evidence1 = evidence1;
         this.evidence2 = evidence2;
         this.evidence3 = evidence3;
+    }
+
+    public GhostList(Ghost ghost){
+        ghostName = ghost.getName();
+        evidence1 = ghost.getEvidence().get(0);
+        evidence2 = ghost.getEvidence().get(1);
+        evidence3 = ghost.getEvidence().get(2);
     }
 }
