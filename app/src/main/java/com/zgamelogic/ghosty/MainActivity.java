@@ -14,6 +14,7 @@ import com.zgamelogic.ghosty.data.Ghost;
 import com.zgamelogic.ghosty.services.GhostyAPI;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class MainActivity<dataSet> extends AppCompatActivity {
 

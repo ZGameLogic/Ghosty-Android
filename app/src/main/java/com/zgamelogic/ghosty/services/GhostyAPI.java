@@ -20,7 +20,7 @@ public abstract class GhostyAPI {
 
     private static final String API_URL = "https://zgamelogic.com:2006/ghosty";
 
-    public static Thread getGhosts(NetworkSuccess success) {
+    public static Thread getGhosts(NetworkGhostSuccess success) {
         String url = API_URL + "/Ghosts3";
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(url);
@@ -37,11 +37,28 @@ public abstract class GhostyAPI {
         });
     }
 
-    public LinkedList<String> getEvidences(){
-        return new LinkedList<String>();
+    public static Thread getEvidence(NetworkEvidenceSuccess success) {
+        String url = API_URL + "/Evidence2";
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpGet request = new HttpGet(url);
+        return new Thread(() -> {
+            try {
+                CloseableHttpResponse response = httpClient.execute(request);
+                ObjectMapper om = new ObjectMapper();
+                String[] evidenceArray = om.readValue(EntityUtils.toString(response.getEntity()), String[].class);
+                Log.i("GhostyAPI", "We finished reading in the stuff");
+                success.success(new LinkedList<>(Arrays.asList(evidenceArray)));
+            } catch(IOException e) {
+                Log.e("GhostyAPI", e.getMessage());
+            }
+        });
     }
 
-    public interface NetworkSuccess {
+    public interface NetworkGhostSuccess {
         void success(LinkedList<Ghost> ghosts);
+    }
+
+    public interface NetworkEvidenceSuccess {
+        void success(LinkedList<String> evidence);
     }
 }
