@@ -19,7 +19,7 @@ import java.util.LinkedList;
 public abstract class GhostyAPI {
 
     public static final String LOG_API = "GhostyAPI";
-    private static final String API_URL = "https://zgamelogic.com:2006/ghosty";
+    private static final String API_URL = "https://zgamelogic.com/ghosty";
 
     public static Thread getGhosts(NetworkGhostSuccess success) {
         String url = API_URL + "/Ghosts3";
