@@ -17,10 +17,12 @@
         android:textOn="On"
         android:text="State:"
         android:showText="true"
+        android:visibility="gone"
+        android:textColor="@color/cardview_dark_background"
         />
 
 
-    <!--evidenceListString represents the TextView for text for all toggles-->
+    <!--evidenceListString is the text for the individual evidences in the evidence view-->
     <TextView
         android:id="@+id/evidenceListString"
         android:layout_width="match_parent"

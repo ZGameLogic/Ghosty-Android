@@ -1,13 +1,22 @@
 package com.zgamelogic.ghosty;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.zgamelogic.ghosty.data.Ghost;
+
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -18,14 +27,29 @@ import java.util.List;
 public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
     List<EvidenceList> itemList = Collections.emptyList();
 
+    HashSet<String> evRemains = new HashSet<String>();
+
+    GhostViewAdapter adapterG;
     Context context;
     View.OnClickListener listener;
 
-    public EvidenceViewAdapter(List<EvidenceList> itemList, Context context, View.OnClickListener listener)
+    List<GhostList> glist;
+
+
+    public EvidenceViewAdapter(List<EvidenceList> itemList, Context context, View.OnClickListener listener, GhostViewAdapter adapterG)
     {
         this.itemList = itemList;
         this.context = context;
         this.listener = listener;
+        this.adapterG = adapterG;
+        this.glist = adapterG.itemList;
+
+        for (int i = 0; i < itemList.size(); i++) {
+            evRemains.add(itemList.get(i).evidenceText);
+        }
+
+        //ArrayList<GhostList> gswitch;
+
     }
 
     /**
@@ -65,14 +89,46 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
         // Set the text for the list item
         viewHolder.toggleName.setText(itemList.get(position).evidenceText);
 
-        // Set functionality for the toggle button
-        viewHolder.view.setOnClickListener(new View.OnClickListener() {
+        viewHolder.evSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view)
-            {
-                listener.onClick(view);
-            }
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                Log.v("Switch State=", ""+isChecked);
+                Switch switchView = (Switch) viewHolder.view.findViewById(R.id.simpleSwitchList);
+                TextView textView = (TextView) viewHolder.view.findViewById(R.id.evidenceListString);
+                String switchText = textView.getText().toString();
+                String ghostMatch;
+
+                if (isChecked) {
+
+                    for (int i = 0; i < glist.size(); i++) {
+
+                        if (!glist.get(i).isMatched(switchText)){
+                            Toast.makeText(context.getApplicationContext(), glist.get(i).ghostName, Toast.LENGTH_SHORT).show();
+                            glist.remove(i);
+                            i--;
+
+                        }
+
+                        }
+                        //else{
+                            ghostMatch = "None";
+                        //}
+                    }
+
+                }
+                //else{
+                    //Toast.makeText(context.getApplicationContext(), "Switch is unchecked", Toast.LENGTH_SHORT).show();
+                //}
+
         });
+        // Set functionality for the toggle button
+        //viewHolder.view.setOnClickListener(new View.OnClickListener() {
+            //@Override
+            //public void onClick(View view)
+            //{
+                //listener.onClick(view);
+            //}
+        //});
     }
 
     /**

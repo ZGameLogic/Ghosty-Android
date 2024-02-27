@@ -1,5 +1,7 @@
 package com.zgamelogic.ghosty;
 
+import android.widget.Switch;
+
 /**
  * Purpose: stores a string for one of the evidence toggles.
  * evidenceText(global) is generally named so that any specified evidence string can be stored.
@@ -7,6 +9,9 @@ package com.zgamelogic.ghosty;
 public class EvidenceList {
     //This holds the evidence name for one of the toggles
     String evidenceText;
+
+
+
 
     /**
      * Constructor below

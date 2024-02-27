@@ -1,6 +1,7 @@
 package com.zgamelogic.ghosty;
 
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,19 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 public class EvidenceHolder extends RecyclerView.ViewHolder{
 
     public TextView toggleName;
+    public Switch evSwitch;
     public View view;
-    //Creates both a TextView and a View.
     //itemView is local and view is global.
-    //Placeholder for 'Toggle switch.'
 
     public EvidenceHolder(View itemView) {
         super(itemView); // Call parent constructor
         toggleName = (TextView)itemView.findViewById(R.id.evidenceListString);
+        evSwitch = (Switch)itemView.findViewById(R.id.simpleSwitchList);
         view = itemView;
 
         // Make views visible
         toggleName.setVisibility(View.VISIBLE);
+        evSwitch.setVisibility(View.VISIBLE);
         view.setVisibility(View.VISIBLE);
     }
 }
-//Need to add 'framework' for future toggle operations.

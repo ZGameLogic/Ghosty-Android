@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.util.Pair;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,8 +13,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zgamelogic.ghosty.data.Ghost;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
 
 public class MainActivity<dataSet> extends AppCompatActivity {
 
@@ -32,18 +36,6 @@ public class MainActivity<dataSet> extends AppCompatActivity {
         ArrayList<EvidenceList> evidenceListItems = getEvidenceListData();
         ArrayList<GhostList> ghostListItems = getGhostListData();
 
-        // Create evidence list in investigation view
-        evRecyclerView = (RecyclerView)findViewById(R.id.evidenceRecyclerView);
-        evListener = new OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Toast.makeText(MainActivity.this,"Ev list view was clicked",Toast.LENGTH_SHORT).show();
-                Switch test = (Switch) findViewById(R.id.simpleSwitchList);
-            }
-        };
-        adapterE = new EvidenceViewAdapter(evidenceListItems, getApplication(), evListener);
-        evRecyclerView.setAdapter(adapterE);
-        evRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
         // Create ghost list in investigation view
         ghostRecyclerView = (RecyclerView)findViewById(R.id.ghostRecyclerView);
@@ -56,6 +48,22 @@ public class MainActivity<dataSet> extends AppCompatActivity {
         adapterG = new GhostViewAdapter(ghostListItems, getApplication(), ghostListener);
         ghostRecyclerView.setAdapter(adapterG);
         ghostRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+
+        // Create evidence list in investigation view
+        evRecyclerView = (RecyclerView)findViewById(R.id.evidenceRecyclerView);
+
+        evListener = new OnClickListener() {
+            @Override
+            public void onClick(View view){
+
+            };
+
+        };
+
+        adapterE = new EvidenceViewAdapter(evidenceListItems, getApplication(), evListener, adapterG);
+        evRecyclerView.setAdapter(adapterE);
+        evRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 
     @Override
@@ -72,11 +80,17 @@ public class MainActivity<dataSet> extends AppCompatActivity {
      */
     private ArrayList<EvidenceList> getEvidenceListData()
     {
-        ArrayList<EvidenceList> list = new ArrayList<EvidenceList>();
-        for (int i = 0; i < 20; i++) {
-            list.add(new EvidenceList("This is evidence item ".concat(Integer.toString(i))));
-        }
-        return list;
+        ArrayList<EvidenceList> evlist = new ArrayList<EvidenceList>();
+
+        evlist.add(new EvidenceList("Fingerprints"));
+        evlist.add(new EvidenceList("Freezing Temperatures"));
+        evlist.add(new EvidenceList("Ghost Orb"));
+        evlist.add(new EvidenceList("EMF Level 5"));
+        evlist.add(new EvidenceList("D.O.T.S Projector"));
+        evlist.add(new EvidenceList("Ghost Writing"));
+        evlist.add(new EvidenceList("Spirit Box"));
+
+        return evlist;
     }
 
     /**
@@ -84,14 +98,16 @@ public class MainActivity<dataSet> extends AppCompatActivity {
      * Each GhostList object is populated with a number of string/TextView's defined in view_item.xml
      * @return Arraylist<GhostList> containing data for ghost list
      */
-    private ArrayList<GhostList> getGhostListData()
+    public ArrayList<GhostList> getGhostListData()
     {
-        ArrayList<GhostList> list = new ArrayList<GhostList>();
-        list.add(new GhostList("Brandon", "Pointers", "None", "Mango juice"));
-        list.add(new GhostList("Jason", "Tom Skilling", "Amouranth", "Milk"));
-        list.add(new GhostList("Rob", "Teeth", "Vodka", "Sandshrew"));
-        list.add(new GhostList("Ben", "Java compiler", "Hearthstone", "Kenobi"));
-        list.add(new GhostList("Reagan", "World's largest wealth gap", "Drug epidemic", "Corn syrup"));
-        return list;
+        ArrayList<GhostList> glist = new ArrayList<GhostList>();
+
+        glist.add(new GhostList("Banshee", "D.O.T.S Projector", "Ghost Orb", "Fingerprints"));
+        glist.add(new GhostList("Demon", "Ghost Writing", "Fingerprints", "Freezing Temperatures"));
+        glist.add(new GhostList("Deogen", "D.O.T.S Projector", "Ghost Writing", "Spirit Box"));
+        glist.add(new GhostList("Goryo", "D.O.T.S Projector", "EMF Level 5", "Fingerprints"));
+        glist.add(new GhostList("Hantu", "Ghost Orb", "Fingerprints", "Freezing Temperatures"));
+
+        return glist;
     }
 }
