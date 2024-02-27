@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.annotation.SuppressLint;
 import android.util.Pair;
 import android.view.View;
@@ -14,10 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zgamelogic.ghosty.data.Ghost;
+import com.zgamelogic.ghosty.services.GhostyAPI;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.HashSet;
+import java.util.LinkedList;
+
 
 public class MainActivity<dataSet> extends AppCompatActivity {
 
@@ -26,6 +28,8 @@ public class MainActivity<dataSet> extends AppCompatActivity {
     GhostViewAdapter adapterG;
     RecyclerView evRecyclerView, ghostRecyclerView;
     OnClickListener evListener, ghostListener;
+
+    final Integer SHORT_WAIT = 200;  // ms
 
     @Override
     //
@@ -80,17 +84,28 @@ public class MainActivity<dataSet> extends AppCompatActivity {
      */
     private ArrayList<EvidenceList> getEvidenceListData()
     {
-        ArrayList<EvidenceList> evlist = new ArrayList<EvidenceList>();
+        ArrayList<EvidenceList> list = new ArrayList<>();
+        GhostyAPI.getEvidence(evidences -> {
+            for(String evidence: evidences){
+                Log.d(GhostyAPI.LOG_API, "we read: " + evidence);
+                list.add(new EvidenceList(evidence));
+            }
 
-        evlist.add(new EvidenceList("Fingerprints"));
-        evlist.add(new EvidenceList("Freezing Temperatures"));
-        evlist.add(new EvidenceList("Ghost Orb"));
-        evlist.add(new EvidenceList("EMF Level 5"));
-        evlist.add(new EvidenceList("D.O.T.S Projector"));
-        evlist.add(new EvidenceList("Ghost Writing"));
-        evlist.add(new EvidenceList("Spirit Box"));
-
-        return evlist;
+            // Update UI once recycler view adapter support is initialized
+            while (adapterE == null) {
+                try {
+                    Thread.sleep(SHORT_WAIT);
+                } catch (InterruptedException e) {
+                    Log.e(GhostyAPI.LOG_API, "interrupted evidence api sleep");
+                }
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapterE.notifyDataSetChanged();
+                }});
+        }).start();
+        return list;
     }
 
     /**
@@ -98,16 +113,29 @@ public class MainActivity<dataSet> extends AppCompatActivity {
      * Each GhostList object is populated with a number of string/TextView's defined in view_item.xml
      * @return Arraylist<GhostList> containing data for ghost list
      */
-    public ArrayList<GhostList> getGhostListData()
+    private ArrayList<GhostList> getGhostListData()
     {
-        ArrayList<GhostList> glist = new ArrayList<GhostList>();
+        ArrayList<GhostList> list = new ArrayList<>();
+        GhostyAPI.getGhosts(ghosts -> {
+            for(Ghost ghost: ghosts){
+                Log.d(GhostyAPI.LOG_API, "we read: " + ghost.getName());
+                list.add(new GhostList(ghost));
+            }
 
-        glist.add(new GhostList("Banshee", "D.O.T.S Projector", "Ghost Orb", "Fingerprints"));
-        glist.add(new GhostList("Demon", "Ghost Writing", "Fingerprints", "Freezing Temperatures"));
-        glist.add(new GhostList("Deogen", "D.O.T.S Projector", "Ghost Writing", "Spirit Box"));
-        glist.add(new GhostList("Goryo", "D.O.T.S Projector", "EMF Level 5", "Fingerprints"));
-        glist.add(new GhostList("Hantu", "Ghost Orb", "Fingerprints", "Freezing Temperatures"));
-
-        return glist;
+            // Update UI once recycler view adapter support is initialized
+            while (adapterG == null) {
+                try {
+                    Thread.sleep(SHORT_WAIT);
+                } catch (InterruptedException e) {
+                    Log.e(GhostyAPI.LOG_API, "interrupted ghost api sleep");
+                }
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapterG.notifyDataSetChanged();
+                }});
+        }).start();
+        return list;
     }
 }

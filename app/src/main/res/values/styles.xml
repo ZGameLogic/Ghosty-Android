@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TabView">
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="android:color">?colorPrimaryVariant</item>
+        <item name="android:background">?colorPrimary</item>
+    </style>
+    <style name="Scrollable">
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <item name="android:scrollbarStyle">insideOverlay</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:overScrollMode">ifContentScrolls</item>
+    </style>
+    <style name="ViewItem">
+        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="android:color">?colorSecondary</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+</resources>

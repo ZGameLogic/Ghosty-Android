@@ -21,6 +21,8 @@ public class GhostViewAdapter extends RecyclerView.Adapter<GhostHolder> {
     Context context;
     View.OnClickListener listener;
 
+
+
     public GhostViewAdapter(List<GhostList> itemList, Context context, View.OnClickListener listener)
     {
         this.itemList = itemList;
