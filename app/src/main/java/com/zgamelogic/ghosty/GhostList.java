@@ -18,16 +18,8 @@ public class GhostList {
 
     /**
      * Constructor below
-     * @param ghostName: name of the ghost for this ghost list item
+     * @param ghost: Ghost object for this ghost
      */
-    public GhostList(String ghostName, String evidence1, String evidence2, String evidence3)
-    {
-        this.ghostName = ghostName;
-        this.evidence1 = evidence1;
-        this.evidence2 = evidence2;
-        this.evidence3 = evidence3;
-    }
-
     public GhostList(Ghost ghost){
         ghostName = ghost.getName();
         evidence1 = ghost.getEvidence().get(0);

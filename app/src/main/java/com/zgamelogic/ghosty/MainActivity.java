@@ -23,17 +23,15 @@ public class MainActivity<dataSet> extends AppCompatActivity {
     GhostViewAdapter adapterG;
     RecyclerView evRecyclerView, ghostRecyclerView;
     OnClickListener evListener, ghostListener;
+    final Integer SHORT_WAIT = 200;  // ms
 
     @Override
-    //
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ArrayList<EvidenceList> evidenceListItems = getEvidenceListData();
         ArrayList<GhostList> ghostListItems = getGhostListData();
-
-        Log.i("GhostyAPI", ghostListItems.size() + "");
 
         // Create evidence list in investigation view
         evRecyclerView = (RecyclerView)findViewById(R.id.evidenceRecyclerView);
@@ -75,9 +73,26 @@ public class MainActivity<dataSet> extends AppCompatActivity {
     private ArrayList<EvidenceList> getEvidenceListData()
     {
         ArrayList<EvidenceList> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            list.add(new EvidenceList("This is evidence item ".concat(Integer.toString(i))));
-        }
+        GhostyAPI.getEvidence(evidences -> {
+            for(String evidence: evidences){
+                Log.d(GhostyAPI.LOG_API, "we read: " + evidence);
+                list.add(new EvidenceList(evidence));
+            }
+
+            // Update UI once recycler view adapter support is initialized
+            while (adapterE == null) {
+                try {
+                    Thread.sleep(SHORT_WAIT);
+                } catch (InterruptedException e) {
+                    Log.e(GhostyAPI.LOG_API, "interrupted evidence api sleep");
+                }
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapterE.notifyDataSetChanged();
+                }});
+        }).start();
         return list;
     }
 
@@ -91,19 +106,23 @@ public class MainActivity<dataSet> extends AppCompatActivity {
         ArrayList<GhostList> list = new ArrayList<>();
         GhostyAPI.getGhosts(ghosts -> {
             for(Ghost ghost: ghosts){
-                Log.i("GhostyAPI", "We read: " + ghost.getName());
+                Log.d(GhostyAPI.LOG_API, "we read: " + ghost.getName());
                 list.add(new GhostList(ghost));
             }
-            new Runnable() {
+
+            // Update UI once recycler view adapter support is initialized
+            while (adapterG == null) {
+                try {
+                    Thread.sleep(SHORT_WAIT);
+                } catch (InterruptedException e) {
+                    Log.e(GhostyAPI.LOG_API, "interrupted ghost api sleep");
+                }
+            }
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (adapterG != null) {
-                        adapterG.notifyDataSetChanged();
-                        Log.i("GhostyAPI", "we notified");
-                    } else {
-                        Log.i("GhostyAPI", "we didnt notified");
-                    }
-                }};
+                    adapterG.notifyDataSetChanged();
+                }});
         }).start();
         return list;
     }

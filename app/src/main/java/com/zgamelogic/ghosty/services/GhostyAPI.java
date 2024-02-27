@@ -18,6 +18,7 @@ import java.util.LinkedList;
 
 public abstract class GhostyAPI {
 
+    public static final String LOG_API = "GhostyAPI";
     private static final String API_URL = "https://zgamelogic.com/ghosty";
 
     public static Thread getGhosts(NetworkGhostSuccess success) {
@@ -26,13 +27,13 @@ public abstract class GhostyAPI {
         HttpGet request = new HttpGet(url);
         return new Thread(() -> {
             try {
-                CloseableHttpResponse response = httpClient.execute(request);
-                ObjectMapper om = new ObjectMapper();
-                Ghost[] ghostsArray = om.readValue(EntityUtils.toString(response.getEntity()), Ghost[].class);
-                Log.i("GhostyAPI", "We finished reading in the stuff");
-                success.success(new LinkedList<>(Arrays.asList(ghostsArray)));
+            CloseableHttpResponse response = httpClient.execute(request);
+            ObjectMapper om = new ObjectMapper();
+            Ghost[] ghostsArray = om.readValue(EntityUtils.toString(response.getEntity()), Ghost[].class);
+            Log.i(LOG_API, "We finished reading in the stuff");
+            success.success(new LinkedList<>(Arrays.asList(ghostsArray)));
             } catch(IOException e) {
-                Log.e("GhostyAPI", e.getMessage());
+                Log.e(LOG_API, e.getMessage());
             }
         });
     }
@@ -46,10 +47,10 @@ public abstract class GhostyAPI {
                 CloseableHttpResponse response = httpClient.execute(request);
                 ObjectMapper om = new ObjectMapper();
                 String[] evidenceArray = om.readValue(EntityUtils.toString(response.getEntity()), String[].class);
-                Log.i("GhostyAPI", "We finished reading in the stuff");
+                Log.i(LOG_API, "We finished reading in the stuff");
                 success.success(new LinkedList<>(Arrays.asList(evidenceArray)));
             } catch(IOException e) {
-                Log.e("GhostyAPI", e.getMessage());
+                Log.e(LOG_API, e.getMessage());
             }
         });
     }
