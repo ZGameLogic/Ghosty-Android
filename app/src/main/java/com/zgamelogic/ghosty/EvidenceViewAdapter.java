@@ -27,7 +27,7 @@ import java.util.List;
 public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
     List<EvidenceList> itemList = Collections.emptyList();
 
-    HashSet<String> evRemains = new HashSet<String>();
+    List<String> toggleChecked = Collections.emptyList();
 
     GhostViewAdapter adapterG;
     Context context;
@@ -35,6 +35,10 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
 
     List<GhostList> glist;
 
+    final String LOG_EVA = "eva";
+
+    List<GhostList> graveYard = Collections.emptyList();
+    //
 
     public EvidenceViewAdapter(List<EvidenceList> itemList, Context context, View.OnClickListener listener, GhostViewAdapter adapterG)
     {
@@ -43,13 +47,6 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
         this.listener = listener;
         this.adapterG = adapterG;
         this.glist = adapterG.itemList;
-
-        for (int i = 0; i < itemList.size(); i++) {
-            evRemains.add(itemList.get(i).evidenceText);
-        }
-
-        //ArrayList<GhostList> gswitch;
-
     }
 
     /**
@@ -92,45 +89,56 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
         viewHolder.evSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                Log.v("Switch State=", ""+isChecked);
+                Log.v("Switch State=", "" + isChecked);
                 Switch switchView = (Switch) viewHolder.view.findViewById(R.id.simpleSwitchList);
                 TextView textView = (TextView) viewHolder.view.findViewById(R.id.evidenceListString);
                 String switchText = textView.getText().toString();
-                String ghostMatch;
+                //String ghostMatch;
+
+
+                Boolean isglistModified = false;
+
+                Log.i(LOG_EVA, switchText);
 
                 if (isChecked) {
-
+                    toggleChecked.add(switchText);
                     for (int i = 0; i < glist.size(); i++) {
 
-                        if (!glist.get(i).isMatched(switchText)){
-                            Toast.makeText(context.getApplicationContext(), glist.get(i).ghostName, Toast.LENGTH_SHORT).show();
-                            glist.remove(i);
+                        if (!glist.get(i).isMatched(switchText)) {
+                            Log.i(LOG_EVA, glist.get(i).ghostName + " was selected");
+                            Log.i(LOG_EVA, "The size of glist before remove " + glist.size());
+                            Log.i(LOG_EVA, "The size of adapterG list before remove " + adapterG.itemList.size());
+                            graveYard.add(glist.remove(i));
+                            Log.i(LOG_EVA, "The size of glist after remove " + glist.size());
+                            Log.i(LOG_EVA, "The size of adapterG list after remove " + adapterG.itemList.size());
                             i--;
-
+                            Log.i(LOG_EVA, "Every element in the list was moved over one");
+                            Log.i(LOG_EVA, "isRemoved is set to 'true'");
+                            isglistModified = true;
                         }
 
-                        }
-                        //else{
-                            ghostMatch = "None";
-                        //}
                     }
 
+
                 }
-                //else{
-                    //Toast.makeText(context.getApplicationContext(), "Switch is unchecked", Toast.LENGTH_SHORT).show();
-                //}
+                else{
+                    toggleChecked.remove(switchText);
+                    for (int i = 0; i < graveYard.size(); i++) {
+                        if (graveYard.get(i).isValid(toggleChecked) ){
+                            glist.add(graveYard.remove(i));
+                            isglistModified = true;
+                        }
 
+                    }
+                }
+                if (isglistModified) {
+                    adapterG.notifyDataSetChanged();
+                    Log.i(LOG_EVA, "adapterG was notified");
+                }
+                //TODO: NEED TO TEST CODE.
+            }
         });
-        // Set functionality for the toggle button
-        //viewHolder.view.setOnClickListener(new View.OnClickListener() {
-            //@Override
-            //public void onClick(View view)
-            //{
-                //listener.onClick(view);
-            //}
-        //});
     }
-
     /**
      * Get number of items on the list
      * @return number of items on the list
@@ -153,4 +161,30 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
     {
         super.onAttachedToRecyclerView(recyclerView);
     }
-}
+        }
+/*
+
+                            public remove (int element){
+                                String wasRemoved = arr[element];
+                                arr[element] = 0;
+                                for (int i = element; i < arr[].size(); ++i){
+                                    arr[i] = arr[i + 1];
+                                }
+
+
+
+                                return wasRemoved;
+                            }
+
+                            public remove (String object){
+                                int i;
+
+                                for (i = 0; arr[i] != object; ++i){
+
+                                }
+                                for (int j = i; j < arr[].size(); ++j){
+                                    arr[j] = arr[j + 1];
+                                }
+
+                            }
+*/

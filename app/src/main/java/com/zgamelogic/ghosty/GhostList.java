@@ -1,9 +1,11 @@
 package com.zgamelogic.ghosty;
 
+import com.shapesecurity.salvation2.Values.Hash;
 import com.zgamelogic.ghosty.data.Ghost;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Purpose: stores the information that will be displayed in a single item in
@@ -35,6 +37,8 @@ public class GhostList {
         evSet.add(evidence3);
     }
 
+
+
     /**
      * purpose: Takes a evidence type and determines if it matches a particular ghost name.
      * @method isMatched
@@ -45,15 +49,20 @@ public class GhostList {
 
     }
 
-    /**
-     * purpose: Takes a ghost and checks against a hashset of remaining evidence to see if ghost is valid
+    /** A ghost is valid if, based on the currently selected evidences, the ghost is still potentially the ghost in the game.
+     * purpose:
+     * check all of the evidences that are selected by the user.
+     * if any of the evidences are not in this ghost, return false, otherwise return true.
      * @method isValid
      * @return valid or not
      */
-    //public Boolean isValid(String evClicked) {
-      //  for (int i = 0,) {
-            ;
-        //}
-    //}
+    public Boolean isValid(List<String> toggleChecked) {
+        if ((!toggleChecked.contains(evidence1)) || (!toggleChecked.contains(evidence2)) || (!toggleChecked.contains(evidence3))){
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 
 }
