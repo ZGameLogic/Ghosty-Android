@@ -1,6 +1,7 @@
 package com.zgamelogic.ghosty;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.zgamelogic.ghosty.data.Ghost;
@@ -25,9 +27,9 @@ import java.util.List;
  * all of the various classes for the list and defines the functionality of the list.
  */
 public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
-    List<EvidenceList> itemList = Collections.emptyList();
+    List<EvidenceList> itemList = new ArrayList<EvidenceList>();
 
-    List<String> toggleChecked = Collections.emptyList();
+    List<String> toggleChecked = new ArrayList<String>();
 
     GhostViewAdapter adapterG;
     Context context;
@@ -37,8 +39,9 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
 
     final String LOG_EVA = "eva";
 
-    List<GhostList> graveYard = Collections.emptyList();
-    //
+    //Ghost objects that don't match checked switches' names
+    List<GhostList> graveYard = new ArrayList<GhostList>();
+
 
     public EvidenceViewAdapter(List<EvidenceList> itemList, Context context, View.OnClickListener listener, GhostViewAdapter adapterG)
     {
@@ -82,19 +85,22 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
     @Override
     public void onBindViewHolder(final EvidenceHolder viewHolder, final int position)
     {
+        EvidenceList ev = itemList.get(position);
         //int index = viewHolder.getAdapterPosition(); // Redundant with position param?
         // Set the text for the list item
-        viewHolder.toggleName.setText(itemList.get(position).evidenceText);
+        viewHolder.toggleName.setText(ev.evidenceText);
+        //try using the notifiedDataSetChanged method for testing the color change. Similar to the glistModified condition.
+        //getcolor isn't dynamically updating the color dependent on status.
+        viewHolder.toggleName.setTextColor(ev.getColor());
 
         viewHolder.evSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                EvidenceList ev;
                 Log.v("Switch State=", "" + isChecked);
                 Switch switchView = (Switch) viewHolder.view.findViewById(R.id.simpleSwitchList);
                 TextView textView = (TextView) viewHolder.view.findViewById(R.id.evidenceListString);
                 String switchText = textView.getText().toString();
-                //String ghostMatch;
-
 
                 Boolean isglistModified = false;
 
@@ -103,39 +109,49 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
                 if (isChecked) {
                     toggleChecked.add(switchText);
                     for (int i = 0; i < glist.size(); i++) {
-
                         if (!glist.get(i).isMatched(switchText)) {
-                            Log.i(LOG_EVA, glist.get(i).ghostName + " was selected");
-                            Log.i(LOG_EVA, "The size of glist before remove " + glist.size());
-                            Log.i(LOG_EVA, "The size of adapterG list before remove " + adapterG.itemList.size());
                             graveYard.add(glist.remove(i));
-                            Log.i(LOG_EVA, "The size of glist after remove " + glist.size());
-                            Log.i(LOG_EVA, "The size of adapterG list after remove " + adapterG.itemList.size());
                             i--;
-                            Log.i(LOG_EVA, "Every element in the list was moved over one");
-                            Log.i(LOG_EVA, "isRemoved is set to 'true'");
                             isglistModified = true;
                         }
-
                     }
-
-
                 }
                 else{
                     toggleChecked.remove(switchText);
+                    Log.i(LOG_EVA, "Removed switch name from checked list");
                     for (int i = 0; i < graveYard.size(); i++) {
+                        Log.i(LOG_EVA, "for loop started");
                         if (graveYard.get(i).isValid(toggleChecked) ){
                             glist.add(graveYard.remove(i));
+                            i--;
                             isglistModified = true;
+                            Log.i(LOG_EVA, "isglistModified is true");
                         }
-
                     }
                 }
                 if (isglistModified) {
                     adapterG.notifyDataSetChanged();
                     Log.i(LOG_EVA, "adapterG was notified");
                 }
-                //TODO: NEED TO TEST CODE.
+                for (int i = 0; i < itemList.size(); ++i) {
+                    ev = itemList.get(i);
+                    if(!ev.isValid(glist) && !ev.getGreyStatus()){
+                        Log.i(LOG_EVA, ev.evidenceText +" greyed out");
+                        //UpdateGreyStatus
+                        ev.setGreyStatus(true);
+                        Log.i(LOG_EVA, ev.evidenceText +" status = grey");
+                    }
+                    else if(ev.isValid(glist) && ev.getGreyStatus()){
+                        Log.i(LOG_EVA, ev.evidenceText +" grey be gone");
+                        //UpdateGreyStatus
+                        ev.setGreyStatus(false);
+                        Log.i(LOG_EVA, ev.evidenceText +" status = not grey");
+                    }
+                    else {
+                        Log.i(LOG_EVA, ev.evidenceText + " unchanged");
+                    }
+                }
+
             }
         });
     }
@@ -161,30 +177,4 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
     {
         super.onAttachedToRecyclerView(recyclerView);
     }
-        }
-/*
-
-                            public remove (int element){
-                                String wasRemoved = arr[element];
-                                arr[element] = 0;
-                                for (int i = element; i < arr[].size(); ++i){
-                                    arr[i] = arr[i + 1];
-                                }
-
-
-
-                                return wasRemoved;
-                            }
-
-                            public remove (String object){
-                                int i;
-
-                                for (i = 0; arr[i] != object; ++i){
-
-                                }
-                                for (int j = i; j < arr[].size(); ++j){
-                                    arr[j] = arr[j + 1];
-                                }
-
-                            }
-*/
+}

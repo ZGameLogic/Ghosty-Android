@@ -13,7 +13,7 @@
         <item name="android:overScrollMode">ifContentScrolls</item>
     </style>
     <style name="ViewItem">
-        <item name="android:textColor">?colorOnPrimary</item>
+        <item name="android:textColor">?colorOnSecondary</item>
         <item name="android:color">?colorSecondary</item>
         <item name="android:textSize">20sp</item>
     </style>
