@@ -15,12 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:checked="false"
-        android:textOff="Off"
-        android:textOn="On"
-        android:text="State:"
-        android:showText="true"
+        android:showText="false"
         android:visibility="gone"
-        android:textColor="@color/cardview_dark_background"
         />
 
 

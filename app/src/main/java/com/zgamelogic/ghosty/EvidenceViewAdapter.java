@@ -1,7 +1,7 @@
 package com.zgamelogic.ghosty;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +9,10 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.zgamelogic.ghosty.data.Ghost;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -28,20 +22,13 @@ import java.util.List;
  */
 public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
     List<EvidenceList> itemList = new ArrayList<EvidenceList>();
-
     List<String> toggleChecked = new ArrayList<String>();
-
     GhostViewAdapter adapterG;
     Context context;
     View.OnClickListener listener;
-
     List<GhostList> glist;
-
     final String LOG_EVA = "eva";
-
-    //Ghost objects that don't match checked switches' names
-    List<GhostList> graveYard = new ArrayList<GhostList>();
-
+    List<GhostList> graveYard = new ArrayList<GhostList>();   //Ghost objects that don't match checked switches' names
 
     public EvidenceViewAdapter(List<EvidenceList> itemList, Context context, View.OnClickListener listener, GhostViewAdapter adapterG)
     {
@@ -82,30 +69,46 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
      * @param viewHolder java object representing the view_item xml
      * @param position indicates the position in our list of items
      */
+
     @Override
     public void onBindViewHolder(final EvidenceHolder viewHolder, final int position)
     {
+        /*In order to avoid the listener repeatedly being triggered, we:
+        * 1. Remove listener
+        * 2. Update ViewHolder
+        * 3. Add listener
+        */
+        viewHolder.evSwitch.setOnCheckedChangeListener(null);
+
         EvidenceList ev = itemList.get(position);
-        //int index = viewHolder.getAdapterPosition(); // Redundant with position param?
+
         // Set the text for the list item
         viewHolder.toggleName.setText(ev.evidenceText);
-        //try using the notifiedDataSetChanged method for testing the color change. Similar to the glistModified condition.
-        //getcolor isn't dynamically updating the color dependent on status.
         viewHolder.toggleName.setTextColor(ev.getColor());
+
+        //Set switch XML state
+        viewHolder.evSwitch.setChecked(ev.switchState);
+
+        //Enable or Disable current switch
+        viewHolder.evSwitch.setEnabled(!ev.isDisabled());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            viewHolder.evSwitch.setThumbTintList();
+        }
 
         viewHolder.evSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                EvidenceList ev;
-                Log.v("Switch State=", "" + isChecked);
                 Switch switchView = (Switch) viewHolder.view.findViewById(R.id.simpleSwitchList);
                 TextView textView = (TextView) viewHolder.view.findViewById(R.id.evidenceListString);
                 String switchText = textView.getText().toString();
-
                 Boolean isglistModified = false;
+                Boolean isevidenceUiModified = false;
+                EvidenceList ev;
 
+                Log.i(LOG_EVA, "Switch is " + isChecked);
                 Log.i(LOG_EVA, switchText);
 
+                //Update toggleChecked, glist, and graveYard
                 if (isChecked) {
                     toggleChecked.add(switchText);
                     for (int i = 0; i < glist.size(); i++) {
@@ -129,27 +132,46 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
                         }
                     }
                 }
+
+                //Update the GhostViewAdapter ui
                 if (isglistModified) {
                     adapterG.notifyDataSetChanged();
                     Log.i(LOG_EVA, "adapterG was notified");
                 }
+
+                //Update evidence color and switch state
                 for (int i = 0; i < itemList.size(); ++i) {
                     ev = itemList.get(i);
-                    if(!ev.isValid(glist) && !ev.getGreyStatus()){
+
+                    if (switchText.equals(ev.evidenceText)){
+                        ev.switchState = isChecked;
+                    }
+
+                    if(!ev.isValid(glist) && !ev.isDisabled()){
                         Log.i(LOG_EVA, ev.evidenceText +" greyed out");
                         //UpdateGreyStatus
                         ev.setGreyStatus(true);
                         Log.i(LOG_EVA, ev.evidenceText +" status = grey");
+                        isevidenceUiModified = true;
+                        Log.i(LOG_EVA, "isevidenceUiModified is true");
                     }
-                    else if(ev.isValid(glist) && ev.getGreyStatus()){
+                    else if(ev.isValid(glist) && ev.isDisabled()){
                         Log.i(LOG_EVA, ev.evidenceText +" grey be gone");
                         //UpdateGreyStatus
                         ev.setGreyStatus(false);
                         Log.i(LOG_EVA, ev.evidenceText +" status = not grey");
+                        isevidenceUiModified = true;
+                        Log.i(LOG_EVA, "isevidenceUiModified is true");
                     }
                     else {
                         Log.i(LOG_EVA, ev.evidenceText + " unchanged");
                     }
+                }
+
+                //Update the EvidenceViewAdapter ui
+                if (isevidenceUiModified) {
+                    notifyDataSetChanged();
+                    Log.i(LOG_EVA, "EvidenceViewAdapter was notified");
                 }
 
             }

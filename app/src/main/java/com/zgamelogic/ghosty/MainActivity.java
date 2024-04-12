@@ -88,7 +88,7 @@ public class MainActivity<dataSet> extends AppCompatActivity {
         GhostyAPI.getEvidence(evidences -> {
             for(String evidence: evidences){
                 Log.d(GhostyAPI.LOG_API, "we read: " + evidence);
-                list.add(new EvidenceList(evidence));
+                list.add(new EvidenceList(evidence, this));
             }
 
             // Update UI once recycler view adapter support is initialized

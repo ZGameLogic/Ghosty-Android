@@ -24,9 +24,10 @@ public class GhostList {
 
     /**
      * Constructor below
+     *
      * @param ghost: Ghost object for this ghost
      */
-    public GhostList(Ghost ghost){
+    public GhostList(Ghost ghost) {
         ghostName = ghost.getName();
         evidence1 = ghost.getEvidence().get(0);
         evidence2 = ghost.getEvidence().get(1);
@@ -38,31 +39,33 @@ public class GhostList {
     }
 
 
-
     /**
      * purpose: Takes a evidence type and determines if it matches a particular ghost name.
-     * @method isMatched
+     *
      * @return a match or not
+     * @method isMatched
      */
     public Boolean isMatched(String evClicked) {
         return evSet.contains(evClicked);
 
     }
 
-    /** A ghost is valid if, based on the currently selected evidences, the ghost is still potentially the ghost in the game.
+    /**
+     * A ghost is valid if, based on the currently selected evidences, the ghost is still potentially the ghost in the game.
      * purpose:
      * check all of the evidences that are selected by the user.
      * if any of the evidences are not in this ghost, return false, otherwise return true.
-     * @method isValid
+     *
      * @return valid or not
+     * @method isValid
      */
     public Boolean isValid(List<String> toggleChecked) {
-        if ((!toggleChecked.contains(evidence1)) || (!toggleChecked.contains(evidence2)) || (!toggleChecked.contains(evidence3))){
-            return false;
+        for (int i = 0; i < toggleChecked.size(); ++i) {
+            if ((!isMatched(toggleChecked.get(i)))) {
+                return false;
+            }
         }
-        else {
-            return true;
-        }
-    }
 
+        return true;
+    }
 }

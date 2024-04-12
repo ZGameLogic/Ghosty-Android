@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Other values-->
+    <attr name="colorDeactivated" format="reference" />
+    <attr name="colorButtonEnabled" format="reference" />
+</resources>

@@ -16,5 +16,10 @@
         <item name="android:textColor">?colorOnSecondary</item>
         <item name="android:color">?colorSecondary</item>
         <item name="android:textSize">20sp</item>
+        <item name="colorDeactivated">?colorDeactivated</item>
+       <!-- <item name="colorControlActivated">?colorDeactivated</item>
+        <item name="colorSwitchThumbNormal">?colorDeactivated</item>
+        <item name="android:colorForeground">?colorDeactivated</item> -->
+        <item name="colorButtonEnabled">?colorButtonEnabled</item>
     </style>
 </resources>

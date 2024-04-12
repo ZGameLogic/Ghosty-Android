@@ -19,11 +19,15 @@ public class EvidenceList {
     //This holds the evidence name for one of the toggles
     String evidenceText;
 
-    boolean greyStatus;
+    boolean deactivatedStatus;
 
     int colorStatus;
 
     int defaultTextColor;
+
+    int deactivatedTextColor;
+
+    boolean switchState;
 
     Context context;
 
@@ -37,14 +41,21 @@ public class EvidenceList {
         //Local has priority over global.
         this.context = context;
         this.evidenceText = evidenceFilter; //global = Local
-        this.greyStatus = false;
-        defaultTextColor = getDefaultColor();
+        this.deactivatedStatus = false;
+        switchState = false;
+        defaultTextColor = getColor(android.R.attr.textColor);
         colorStatus = defaultTextColor;
-
+        deactivatedTextColor = getColor(R.attr.colorDeactivated);
     }
 
-    private int getDefaultColor() {
-        int[] attrs = {android.R.attr.textColor};
+
+    /**
+     * Gets a color from the ViewItem style
+     * @param colorRes
+     * @return
+     */
+    private int getColor(int colorRes) {
+        int[] attrs = {colorRes};
         @SuppressLint("ResourceType") TypedArray ta = context.obtainStyledAttributes(R.style.ViewItem, attrs);
         int defaultColor = ContextCompat.getColor(context, R.color.black);
         int textColor = ta.getColor(0, defaultColor);
@@ -53,14 +64,23 @@ public class EvidenceList {
         return textColor;
     }
 
-    public boolean getGreyStatus(){
-        return greyStatus;
+    /**
+     * Returns grey status
+     * @return true if switch is disabled, false if switch is enabled.
+     */
+    public boolean isDisabled(){
+        return deactivatedStatus;
     }
+
 
     public void setGreyStatus(boolean greyStatus) {
         if (greyStatus) {
-            this.greyStatus = true;
-            colorStatus = ContextCompat.getColor(context, R.color.red_tone_teal_grey);
+            this.deactivatedStatus = true;
+            colorStatus = deactivatedTextColor;
+        }
+        else {
+            this.deactivatedStatus = false;
+            colorStatus = defaultTextColor;
         }
 
 
