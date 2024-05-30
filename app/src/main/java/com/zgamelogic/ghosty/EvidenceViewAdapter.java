@@ -92,7 +92,7 @@ public class EvidenceViewAdapter extends RecyclerView.Adapter<EvidenceHolder> {
         //Enable or Disable current switch
         viewHolder.evSwitch.setEnabled(!ev.isDisabled());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            viewHolder.evSwitch.setThumbTintList();
+            //viewHolder.evSwitch.setThumbTintList(0);
         }
 
         viewHolder.evSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

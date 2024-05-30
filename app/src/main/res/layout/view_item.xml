@@ -47,7 +47,7 @@
         android:visibility="gone"
         style="@style/ViewItem"/>
 
-    <!-- Three textviews specifying this ghost's evidence types -->
+    <!-- Variable textviews specifying this ghost's evidence types -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -57,30 +57,6 @@
         android:visibility="gone"
         style="@style/ViewItem">
 
-        <TextView
-            android:id="@+id/ghostEv1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="ghost evidence 1"
-            android:textAlignment="center"
-            style="@style/ViewItem"/>
-        <TextView
-            android:id="@+id/ghostEv2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="ghost evidence 2"
-            android:textAlignment="center"
-            style="@style/ViewItem"/>
-        <TextView
-            android:id="@+id/ghostEv3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="ghost evidence 3"
-            android:textAlignment="center"
-            style="@style/ViewItem"/>
     </LinearLayout>
 
 </RelativeLayout>

@@ -30,10 +30,10 @@ public abstract class GhostyAPI {
             CloseableHttpResponse response = httpClient.execute(request);
             ObjectMapper om = new ObjectMapper();
             Ghost[] ghostsArray = om.readValue(EntityUtils.toString(response.getEntity()), Ghost[].class);
-            Log.i(LOG_API, "We finished reading in the stuff");
+            Log.i(LOG_API, "We finished reading in ghosts");
             success.success(new LinkedList<>(Arrays.asList(ghostsArray)));
             } catch(IOException e) {
-                Log.e(LOG_API, e.getMessage());
+                Log.e(LOG_API, "failed to read ghosts: " + e.getMessage());
             }
         });
     }
@@ -47,10 +47,10 @@ public abstract class GhostyAPI {
                 CloseableHttpResponse response = httpClient.execute(request);
                 ObjectMapper om = new ObjectMapper();
                 String[] evidenceArray = om.readValue(EntityUtils.toString(response.getEntity()), String[].class);
-                Log.i(LOG_API, "We finished reading in the stuff");
+                Log.i(LOG_API, "We finished reading in evidences");
                 success.success(new LinkedList<>(Arrays.asList(evidenceArray)));
             } catch(IOException e) {
-                Log.e(LOG_API, e.getMessage());
+                Log.e(LOG_API, "failed to read evidence: " + e.getMessage());
             }
         });
     }

@@ -5,17 +5,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.annotation.SuppressLint;
-import android.util.Pair;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
-import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zgamelogic.ghosty.data.Ghost;
 import com.zgamelogic.ghosty.services.GhostyAPI;
+import com.zgamelogic.ghosty.services.InvestigationViewManager;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -26,7 +23,7 @@ public class MainActivity<dataSet> extends AppCompatActivity {
 
     EvidenceViewAdapter adapterE;
     GhostViewAdapter adapterG;
-    RecyclerView evRecyclerView, ghostRecyclerView;
+    InvestigationViewManager ivManager;
     OnClickListener evListener, ghostListener;
 
     final Integer SHORT_WAIT = 200;  // ms
@@ -37,37 +34,38 @@ public class MainActivity<dataSet> extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<EvidenceList> evidenceListItems = getEvidenceListData();
-        ArrayList<GhostList> ghostListItems = getGhostListData();
+        LinkedList<String> evidenceListItems = getEvidenceListData();
+        LinkedList<Ghost> ghostListItems = getGhostListData();
 
+        ivManager =  new InvestigationViewManager(this, ghostListItems, evidenceListItems);
 
-        // Create ghost list in investigation view
-        ghostRecyclerView = (RecyclerView)findViewById(R.id.ghostRecyclerView);
-        ghostListener = new OnClickListener() {
-            @Override
-            public void onClick(View view){
-                Toast.makeText(MainActivity.this,"Ghost list view was clicked",Toast.LENGTH_SHORT).show();
-            }
-        };
-        adapterG = new GhostViewAdapter(ghostListItems, getApplication(), ghostListener);
-        ghostRecyclerView.setAdapter(adapterG);
-        ghostRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
-
-        // Create evidence list in investigation view
-        evRecyclerView = (RecyclerView)findViewById(R.id.evidenceRecyclerView);
-
-        evListener = new OnClickListener() {
-            @Override
-            public void onClick(View view){
-
-            };
-
-        };
-
-        adapterE = new EvidenceViewAdapter(evidenceListItems, getApplication(), evListener, adapterG);
-        evRecyclerView.setAdapter(adapterE);
-        evRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+//        // Create ghost list in investigation view
+//        ghostRecyclerView = (RecyclerView)findViewById(R.id.ghostRecyclerView);
+//        ghostListener = new OnClickListener() {
+//            @Override
+//            public void onClick(View view){
+//                Toast.makeText(MainActivity.this,"Ghost list view was clicked",Toast.LENGTH_SHORT).show();
+//            }
+//        };
+//        adapterG = new GhostViewAdapter(ghostListItems, getApplication(), ghostListener);
+//        ghostRecyclerView.setAdapter(adapterG);
+//        ghostRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+//
+//
+//        // Create evidence list in investigation view
+//        evRecyclerView = (RecyclerView)findViewById(R.id.evidenceListView);
+//
+//        evListener = new OnClickListener() {
+//            @Override
+//            public void onClick(View view){
+//
+//            };
+//
+//        };
+//
+//        adapterE = new EvidenceViewAdapter(evidenceListItems, getApplication(), evListener, adapterG);
+//        evRecyclerView.setAdapter(adapterE);
+//        evRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 
     @Override
@@ -79,20 +77,20 @@ public class MainActivity<dataSet> extends AppCompatActivity {
 
     /**
      * Get information for evidence list data for RecyclerView
-     * Each EvidenceList object is populated with a number of string/TextView's defined in view_item.xml
-     * @return Arraylist<EvidenceList> containing data for evidence list
+     * This will signal to InvestigationViewManager when the list is ready.
+     * @return Arraylist<String> containing data for evidence list
      */
-    private ArrayList<EvidenceList> getEvidenceListData()
+    private LinkedList<String> getEvidenceListData()
     {
-        ArrayList<EvidenceList> list = new ArrayList<>();
+        LinkedList<String> list = new LinkedList<>();
         GhostyAPI.getEvidence(evidences -> {
             for(String evidence: evidences){
                 Log.d(GhostyAPI.LOG_API, "we read: " + evidence);
-                list.add(new EvidenceList(evidence, this));
+                list.add(evidence);
             }
 
             // Update UI once recycler view adapter support is initialized
-            while (adapterE == null) {
+            while (ivManager == null) {
                 try {
                     Thread.sleep(SHORT_WAIT);
                 } catch (InterruptedException e) {
@@ -102,7 +100,7 @@ public class MainActivity<dataSet> extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    adapterE.notifyDataSetChanged();
+                    ivManager.populateEvidenceList();
                 }});
         }).start();
         return list;
@@ -111,19 +109,19 @@ public class MainActivity<dataSet> extends AppCompatActivity {
     /**
      * Sample ghosts list data for RecyclerView
      * Each GhostList object is populated with a number of string/TextView's defined in view_item.xml
-     * @return Arraylist<GhostList> containing data for ghost list
+     * @return Arraylist<Ghost> containing data for ghost list
      */
-    private ArrayList<GhostList> getGhostListData()
+    private LinkedList<Ghost> getGhostListData()
     {
-        ArrayList<GhostList> list = new ArrayList<>();
+        LinkedList<Ghost> list = new LinkedList<>();
         GhostyAPI.getGhosts(ghosts -> {
             for(Ghost ghost: ghosts){
                 Log.d(GhostyAPI.LOG_API, "we read: " + ghost.getName());
-                list.add(new GhostList(ghost));
+                list.add(ghost);
             }
 
             // Update UI once recycler view adapter support is initialized
-            while (adapterG == null) {
+            while (ivManager == null) {
                 try {
                     Thread.sleep(SHORT_WAIT);
                 } catch (InterruptedException e) {
@@ -133,7 +131,7 @@ public class MainActivity<dataSet> extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    adapterG.notifyDataSetChanged();
+                    ivManager.populateGhostList();
                 }});
         }).start();
         return list;

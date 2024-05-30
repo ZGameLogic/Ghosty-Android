@@ -21,15 +21,15 @@ public class GhostHolder extends RecyclerView.ViewHolder{
     public GhostHolder(View itemView) {
         super(itemView); // Call parent constructor
         ghostName = (TextView)itemView.findViewById(R.id.ghostListName);
-        evidence1 = (TextView)itemView.findViewById(R.id.ghostEv1);
-        evidence2 = (TextView)itemView.findViewById(R.id.ghostEv2);
-        evidence3 = (TextView)itemView.findViewById(R.id.ghostEv3);
-        view = itemView;
-
-        // Make ghost name textview visible
-        ghostName.setVisibility(View.VISIBLE);
-
-        // Make linear layout serving as bottom row of textviews visible
-        view.findViewById(R.id.ghostEvRow).setVisibility(View.VISIBLE);
+//        evidence1 = (TextView)itemView.findViewById(R.id.ghostEv1);
+//        evidence2 = (TextView)itemView.findViewById(R.id.ghostEv2);
+//        evidence3 = (TextView)itemView.findViewById(R.id.ghostEv3);
+//        view = itemView;
+//
+//        // Make ghost name textview visible
+//        ghostName.setVisibility(View.VISIBLE);
+//
+//        // Make linear layout serving as bottom row of textviews visible
+//        view.findViewById(R.id.ghostEvRow).setVisibility(View.VISIBLE);
     }
 }
