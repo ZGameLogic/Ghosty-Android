@@ -1,20 +1,14 @@
 package com.zgamelogic.ghosty;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.View;
 import android.view.View.OnClickListener;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.zgamelogic.ghosty.data.Ghost;
 import com.zgamelogic.ghosty.services.GhostyAPI;
-import com.zgamelogic.ghosty.services.InvestigationViewManager;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 

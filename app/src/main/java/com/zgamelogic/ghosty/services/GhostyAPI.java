@@ -27,11 +27,11 @@ public abstract class GhostyAPI {
         HttpGet request = new HttpGet(url);
         return new Thread(() -> {
             try {
-            CloseableHttpResponse response = httpClient.execute(request);
-            ObjectMapper om = new ObjectMapper();
-            Ghost[] ghostsArray = om.readValue(EntityUtils.toString(response.getEntity()), Ghost[].class);
-            Log.i(LOG_API, "We finished reading in ghosts");
-            success.success(new LinkedList<>(Arrays.asList(ghostsArray)));
+                CloseableHttpResponse response = httpClient.execute(request);
+                ObjectMapper om = new ObjectMapper();
+                Ghost[] ghostsArray = om.readValue(EntityUtils.toString(response.getEntity()), Ghost[].class);
+                Log.i(LOG_API, "We finished reading in ghosts");
+                success.success(new LinkedList<>(Arrays.asList(ghostsArray)));
             } catch(IOException e) {
                 Log.e(LOG_API, "failed to read ghosts: " + e.getMessage());
             }
