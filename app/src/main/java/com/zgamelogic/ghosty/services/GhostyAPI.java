@@ -2,6 +2,7 @@ package com.zgamelogic.ghosty.services;
 
 import android.util.Log;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zgamelogic.ghosty.data.Ghost;
 
@@ -29,7 +30,7 @@ public abstract class GhostyAPI {
             try {
                 CloseableHttpResponse response = httpClient.execute(request);
                 ObjectMapper om = new ObjectMapper();
-                Ghost[] ghostsArray = om.readValue(EntityUtils.toString(response.getEntity()), Ghost[].class);
+                Ghost[] ghostsArray = om.readValue(response.getEntity().getContent(), Ghost[].class);
                 Log.i(LOG_API, "We finished reading in ghosts");
                 success.success(new LinkedList<>(Arrays.asList(ghostsArray)));
             } catch(IOException e) {

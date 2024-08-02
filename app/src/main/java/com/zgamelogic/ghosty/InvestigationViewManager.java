@@ -1,19 +1,20 @@
 package com.zgamelogic.ghosty;
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.zgamelogic.ghosty.EvidenceList;
-import com.zgamelogic.ghosty.R;
+import androidx.core.content.ContextCompat;
+
 import com.zgamelogic.ghosty.data.Ghost;
-import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -36,7 +37,7 @@ public class InvestigationViewManager {
 
     // Evidences that have been removed from pool of remaining evidences or selected
     private LinkedList<String> graveyard;
-    private HashSet<String> selectedEvidences;
+    private HashSet<String> selectedEvidences = new HashSet<String>();
 
     // XMLs for the linear layout of each list
     private LinearLayout evidenceList;
@@ -47,6 +48,12 @@ public class InvestigationViewManager {
 
     // Tag for logging
     private final String LOG_IVM = "InvestigationView";
+
+    int defaultTextColor;
+
+    int deactivatedTextColor;
+
+    boolean greyStatus;
 
     /**
      * Initialize class.
@@ -59,6 +66,9 @@ public class InvestigationViewManager {
         evidenceList = activity.findViewById(R.id.evidenceList);
         ghostList = activity.findViewById(R.id.ghostList);
         this.activity = activity;
+        defaultTextColor = getColor(android.R.attr.textColor);
+        deactivatedTextColor = getColor(R.attr.colorDeactivated);
+
     }
 
     /**
@@ -87,103 +97,37 @@ public class InvestigationViewManager {
             textview.setVisibility(View.VISIBLE);
 
             // Switch
-            switchview = (Switch)itemView.findViewById(R.id.simpleSwitchList);
-            switchview.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    RelativeLayout evidenceLayout;
-                    TextView evidenceTextview;
-                    String evidence;
+            switchview = (Switch)itemView.findViewById(R.id.evSwitch);
+            switchview.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+                RelativeLayout evidenceLayout;
+                TextView evidenceTextview;
+                String evidence;
+                HashSet<String> remainingEv;
+                Log.i(LOG_IVM, "Clicked");
 
-                    evidenceLayout = (RelativeLayout) compoundButton.getParent();
-                    evidenceTextview = (TextView) evidenceLayout.findViewById(R.id.evidenceListString);
-                    evidence = (String) evidenceTextview.getText();
+                evidenceLayout = (RelativeLayout) compoundButton.getParent();
+                evidenceTextview = (TextView) evidenceLayout.findViewById(R.id.evidenceListString);
+                evidence = (String) evidenceTextview.getText();
 
-                    // Update list of selected evidences
-                    if (isChecked) {
-                        selectedEvidences.add(evidence);
-                    } else {
-                        selectedEvidences.remove(evidence);
-                    }
+                // Update list of selected evidences
+                if (isChecked) {
+                    Log.i(LOG_IVM, "isChecked");
+                    selectedEvidences.add(evidence);
+                    Log.i(LOG_IVM, String.valueOf(selectedEvidences.contains(evidence)));
 
-                    // Update ghosts on the UI
-                    //updateGhostLayout();
-
-                    // Update evidences on the UI
-
-                    /*Switch switch = (Switch) viewHolder.view.findViewById(R.id.simpleSwitchList);
-                    TextView textView = (TextView) viewHolder.view.findViewById(R.id.evidenceListString);
-                    String switchText = textView.getText().toString();
-                    Boolean isglistModified = false;
-                    Boolean isevidenceUiModified = false;
-                    EvidenceList ev;
-
-                    Log.i(LOG_EVA, "Switch is " + isChecked);
-                    Log.i(LOG_EVA, switchText);
-
-                    //Update toggleChecked, glist, and graveYard
-                    if (isChecked) {
-                        toggleChecked.add(switchText);
-                        for (int i = 0; i < glist.size(); i++) {
-                            if (!glist.get(i).isMatched(switchText)) {
-                                graveYard.add(glist.remove(i));
-                                i--;
-                                isglistModified = true;
-                            }
-                        }
-                    } else {
-                        toggleChecked.remove(switchText);
-                        Log.i(LOG_EVA, "Removed switch name from checked list");
-                        for (int i = 0; i < graveYard.size(); i++) {
-                            Log.i(LOG_EVA, "for loop started");
-                            if (graveYard.get(i).isValid(toggleChecked)) {
-                                glist.add(graveYard.remove(i));
-                                i--;
-                                isglistModified = true;
-                                Log.i(LOG_EVA, "isglistModified is true");
-                            }
-                        }
-                    }
-
-                    //Update the GhostViewAdapter ui
-                    if (isglistModified) {
-                        adapterG.notifyDataSetChanged();
-                        Log.i(LOG_EVA, "adapterG was notified");
-                    }
-
-                    //Update evidence color and switch state
-                    for (int i = 0; i < itemList.size(); ++i) {
-                        ev = itemList.get(i);
-
-                        if (switchText.equals(ev.evidenceText)) {
-                            ev.switchState = isChecked;
-                        }
-
-                        if (!ev.isValid(glist) && !ev.isDisabled()) {
-                            Log.i(LOG_EVA, ev.evidenceText + " greyed out");
-                            //UpdateGreyStatus
-                            ev.setGreyStatus(true);
-                            Log.i(LOG_EVA, ev.evidenceText + " status = grey");
-                            isevidenceUiModified = true;
-                            Log.i(LOG_EVA, "isevidenceUiModified is true");
-                        } else if (ev.isValid(glist) && ev.isDisabled()) {
-                            Log.i(LOG_EVA, ev.evidenceText + " grey be gone");
-                            //UpdateGreyStatus
-                            ev.setGreyStatus(false);
-                            Log.i(LOG_EVA, ev.evidenceText + " status = not grey");
-                            isevidenceUiModified = true;
-                            Log.i(LOG_EVA, "isevidenceUiModified is true");
-                        } else {
-                            Log.i(LOG_EVA, ev.evidenceText + " unchanged");
-                        }
-                    }
-
-                    //Update the EvidenceViewAdapter ui
-                    if (isevidenceUiModified) {
-                        notifyDataSetChanged();
-                        Log.i(LOG_EVA, "EvidenceViewAdapter was notified");
-                    }*/
+                } else {
+                    Log.i(LOG_IVM, "notChecked");
+                    selectedEvidences.remove(evidence);
                 }
+
+                // Update ghosts on the UI
+                remainingEv = updateGhostLayout();
+                Log.i(LOG_IVM, "updated");
+
+                // Update evidences on the UI
+                updateEvidenceLayout(remainingEv);
+
+
             });
             switchview.setVisibility(View.VISIBLE);
 
@@ -191,6 +135,7 @@ public class InvestigationViewManager {
             evidenceList.addView(itemView);
         }
     }
+
 
     /**
      * Populate the ghost list based on ghosts.
@@ -204,7 +149,7 @@ public class InvestigationViewManager {
         LayoutInflater inflater;
         LinearLayout.LayoutParams layoutParams;
         TextView textview;
-        LinkedList<String> evidences;
+        HashSet<String> evidences;
 
         // Clear ghostList of any existing items
         ghostList.removeAllViews();
@@ -248,12 +193,60 @@ public class InvestigationViewManager {
     }
 
     /**
+     * Disables or enables switch based on a given boolean
+     * @param itemView A view that holds a switch and a textview
+     * @param isAble True in order to enable switch
+     */
+    private void setSwitchAble(RelativeLayout itemView, boolean isAble) {
+        itemView.findViewById(R.id.evSwitch).setClickable(isAble);
+    }
+
+    private int getColor(int colorRes) {
+
+        int[] attrs = {colorRes};
+        @SuppressLint("ResourceType") TypedArray ta = activity.obtainStyledAttributes(R.style.ViewItem, attrs);
+        int defaultColor = ContextCompat.getColor(activity, R.color.black);
+        int textColor = ta.getColor(0, defaultColor);
+        ta.recycle();
+
+        return textColor;
+    }
+
+    private void setevColor(RelativeLayout itemView){
+        TextView textColor;
+        textColor = (TextView)itemView.findViewById(R.id.evidenceListString);
+        if (greyStatus) {
+            textColor.setTextColor(deactivatedTextColor);
+        }
+        else {
+            textColor.setTextColor(defaultTextColor);
+        }
+    }
+
+    /**
      * Updates the list of evidences on the UI.
      * If there are no remaining ghosts in the ghost list that have a given
      * evidence, then that evidence should be greyed out and disabled.
      */
-    public void updateEvidenceLayout() {
-        ;
+    public void updateEvidenceLayout(HashSet<String> evList) {
+        int i = 0;
+
+        //determine if switch should be enabled or disabled
+        for (String currentEv : evidences) {
+            if (evList.contains(currentEv)) {
+                //ungrey evidence
+                greyStatus = false;
+                setevColor((RelativeLayout)evidenceList.getChildAt(i));
+                setSwitchAble((RelativeLayout)evidenceList.getChildAt(i), true);
+            }
+            else {
+                //grey out evidence
+                greyStatus = true;
+                setevColor((RelativeLayout)evidenceList.getChildAt(i));
+                setSwitchAble((RelativeLayout)evidenceList.getChildAt(i), false);
+            }
+            i++;
+        }
     }
 
     /**
@@ -262,9 +255,18 @@ public class InvestigationViewManager {
      * displayed in the list should be remaining possible outcomes for the
      * game.
      */
-    public void updateGhostLayout() {
+    public HashSet<String> updateGhostLayout() {
+        HashSet<String> evList = new HashSet<>();
+
         for (Ghost ghost : ghosts) {
-            ghost.updateVisibility(selectedEvidences);
+            Log.i(LOG_IVM, ghost.getName());
+
+            //the current ghost is a candidate then add it to a set.
+            if (ghost.updateVisibility(selectedEvidences)) {
+                evList.addAll(ghost.getEvidence());
+            }
         }
+        return evList;
+        //return a set of all of the evidences that are "tied" to the remaining ghosts
     }
 }

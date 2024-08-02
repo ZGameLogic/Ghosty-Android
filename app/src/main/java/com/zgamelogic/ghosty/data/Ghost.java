@@ -3,6 +3,8 @@ package com.zgamelogic.ghosty.data;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -16,7 +18,8 @@ public class Ghost {
     private String name;
     private String description;
     private int id;
-    private LinkedList<String> evidence;
+    private HashSet<String> evidence;
+    @JsonIgnore
     private RelativeLayout uiItem; // The xml element representing this ghost
 
     /**
@@ -30,12 +33,12 @@ public class Ghost {
         this.name = name;
         this.description = description;
         this.id = id;
-        this.evidence = evidence;
+        this.evidence = new HashSet<String>(evidence);
         uiItem = null;
     }
 
     public Ghost() {
-        evidence = new LinkedList<String>();
+        evidence = new HashSet<String>();
         uiItem = null;
     }
 
@@ -60,8 +63,8 @@ public class Ghost {
      * @return true if the ghost can still be a possible outcome
      */
     public boolean isValid(Collection<String> currentEvidence){
-        for (String ev : evidence) {
-            if (!currentEvidence.contains(ev)) {
+        for (String ev : currentEvidence) {
+            if (!evidence.contains(ev)) {
                 return false;
             }
         }
@@ -100,7 +103,7 @@ public class Ghost {
      * Gets a list of evidence of for the ghost
      * @return evidence for the ghost
      */
-    public LinkedList<String> getEvidence() {
+    public HashSet<String> getEvidence() {
         return evidence;
     }
 
@@ -125,13 +128,15 @@ public class Ghost {
      * selected evidences.
      * @param selectedEvidences list of evidences that the user has currently
      *                          selected.
+     * @return true if ghost is a candidate.
      */
-    public void updateVisibility(Collection<String> selectedEvidences) {
+    public boolean updateVisibility(Collection<String> selectedEvidences) {
         boolean isVisible;
         boolean shouldBeVisible;
 
         // Determine if currently visible
         isVisible = uiItem.getVisibility() == View.VISIBLE;
+        //Log in order to figure out if uiItem is affecting the visibility of all ghosts.
 
         // Determine if ghost should be visible
         shouldBeVisible = isValid(selectedEvidences);
@@ -140,7 +145,8 @@ public class Ghost {
         if (shouldBeVisible && !isVisible) {
             uiItem.setVisibility(View.VISIBLE);
         } else if (!shouldBeVisible && isVisible) {
-            uiItem.setVisibility(View.INVISIBLE);
+            uiItem.setVisibility(View.GONE);
         }
+        return shouldBeVisible;
     }
 }
