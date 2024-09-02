@@ -14,9 +14,6 @@ import java.util.LinkedList;
 
 public class MainActivity<dataSet> extends AppCompatActivity {
 
-
-    EvidenceViewAdapter adapterE;
-    GhostViewAdapter adapterG;
     InvestigationViewManager ivManager;
     OnClickListener evListener, ghostListener;
 
@@ -32,34 +29,6 @@ public class MainActivity<dataSet> extends AppCompatActivity {
         LinkedList<Ghost> ghostListItems = getGhostListData();
 
         ivManager =  new InvestigationViewManager(this, ghostListItems, evidenceListItems);
-
-//        // Create ghost list in investigation view
-//        ghostRecyclerView = (RecyclerView)findViewById(R.id.ghostRecyclerView);
-//        ghostListener = new OnClickListener() {
-//            @Override
-//            public void onClick(View view){
-//                Toast.makeText(MainActivity.this,"Ghost list view was clicked",Toast.LENGTH_SHORT).show();
-//            }
-//        };
-//        adapterG = new GhostViewAdapter(ghostListItems, getApplication(), ghostListener);
-//        ghostRecyclerView.setAdapter(adapterG);
-//        ghostRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-//
-//
-//        // Create evidence list in investigation view
-//        evRecyclerView = (RecyclerView)findViewById(R.id.evidenceListView);
-//
-//        evListener = new OnClickListener() {
-//            @Override
-//            public void onClick(View view){
-//
-//            };
-//
-//        };
-//
-//        adapterE = new EvidenceViewAdapter(evidenceListItems, getApplication(), evListener, adapterG);
-//        evRecyclerView.setAdapter(adapterE);
-//        evRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
     }
 
     @Override
