@@ -3,4 +3,5 @@
     <!-- Other values-->
     <attr name="colorDeactivated" format="reference" />
     <attr name="colorButtonEnabled" format="reference" />
+    <attr name="colorOnSecondary2" format="reference"/>
 </resources>

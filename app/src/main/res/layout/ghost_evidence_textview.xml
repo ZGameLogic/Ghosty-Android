@@ -10,4 +10,4 @@
     android:layout_weight="1"
     android:text="ghost evidence default"
     android:textAlignment="center"
-    style="@style/ViewItem"/>
+    style="@style/ViewItemSecondary"/>

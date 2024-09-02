@@ -47,7 +47,9 @@
         android:visibility="gone"
         style="@style/ViewItem"/>
 
-    <!-- Variable textviews specifying this ghost's evidence types -->
+    <!-- Variable textviews specifying this ghost's evidence types
+           all children and their styles are from "ghost_evidence_textview.xml"
+    -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -55,7 +57,7 @@
         android:layout_below="@+id/ghostListName"
         android:id="@+id/ghostEvRow"
         android:visibility="gone"
-        style="@style/ViewItem">
+        style="@style/ViewItemSecondary">
 
     </LinearLayout>
 

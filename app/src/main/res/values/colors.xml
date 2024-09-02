@@ -9,5 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#808080</color>
     <color name="red_tone_teal_grey">#A34138</color>
+    <color name="purple_black">#47476b</color>
+
 
 </resources>
