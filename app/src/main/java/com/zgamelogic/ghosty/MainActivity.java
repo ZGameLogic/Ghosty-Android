@@ -20,7 +20,6 @@ public class MainActivity<dataSet> extends AppCompatActivity {
     final Integer SHORT_WAIT = 200;  // ms
 
     @Override
-    //
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
