@@ -17,6 +17,9 @@
         android:checked="false"
         android:showText="false"
         android:visibility="gone"
+        android:trackTintMode="src_over"
+        android:trackTint="@color/white"
+        android:theme="@style/ViewItem"
         />
 
 
