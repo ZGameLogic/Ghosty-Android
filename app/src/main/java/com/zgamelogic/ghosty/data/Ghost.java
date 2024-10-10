@@ -18,7 +18,7 @@ public class Ghost {
     private String name;
     private String description;
     private int id;
-    private HashSet<String> evidence;
+    private final HashSet<String> evidence;
     @JsonIgnore
     private RelativeLayout uiItem; // The xml element representing this ghost
 
