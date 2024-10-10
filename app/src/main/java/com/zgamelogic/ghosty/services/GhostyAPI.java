@@ -2,7 +2,6 @@ package com.zgamelogic.ghosty.services;
 
 import android.util.Log;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zgamelogic.ghosty.data.Ghost;
 

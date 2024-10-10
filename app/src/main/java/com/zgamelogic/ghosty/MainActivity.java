@@ -3,7 +3,6 @@ package com.zgamelogic.ghosty;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
-import android.view.View.OnClickListener;
 import android.os.Bundle;
 
 import com.zgamelogic.ghosty.data.Ghost;
@@ -14,8 +13,7 @@ import java.util.LinkedList;
 
 public class MainActivity<dataSet> extends AppCompatActivity {
 
-    InvestigationViewManager ivManager;
-    OnClickListener evListener, ghostListener;
+    private InvestigationViewManager ivManager;
 
     final Integer SHORT_WAIT = 200;  // ms
 
@@ -59,11 +57,7 @@ public class MainActivity<dataSet> extends AppCompatActivity {
                     Log.e(GhostyAPI.LOG_API, "interrupted evidence api sleep");
                 }
             }
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ivManager.populateEvidenceList();
-                }});
+            runOnUiThread(() -> ivManager.populateEvidenceList());
         }).start();
         return list;
     }
@@ -90,11 +84,7 @@ public class MainActivity<dataSet> extends AppCompatActivity {
                     Log.e(GhostyAPI.LOG_API, "interrupted ghost api sleep");
                 }
             }
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ivManager.populateGhostList();
-                }});
+            runOnUiThread(() -> ivManager.populateGhostList());
         }).start();
         return list;
     }

@@ -2,7 +2,6 @@ package com.zgamelogic.ghosty;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,28 +31,25 @@ import java.util.LinkedList;
 public class InvestigationViewManager {
 
     // Items to display on evidence and ghost list, respectively
-    private LinkedList<Ghost> ghosts;
-    private LinkedList<String> evidences;
+    private final LinkedList<Ghost> ghosts;
+    private final LinkedList<String> evidences;
 
     // Evidences that have been removed from pool of remaining evidences or selected
-    private LinkedList<String> graveyard;
-    private HashSet<String> selectedEvidences = new HashSet<String>();
+    private final HashSet<String> selectedEvidences = new HashSet<>();
 
     // XMLs for the linear layout of each list
-    private LinearLayout evidenceList;
-    private LinearLayout ghostList;
+    private final LinearLayout evidenceList;
+    private final LinearLayout ghostList;
 
     // Context of app
-    private Activity activity;
+    private final Activity activity;
 
     // Tag for logging
     private final String LOG_IVM = "InvestigationView";
 
-    int defaultTextColor;
-
-    int deactivatedTextColor;
-
-    boolean greyStatus;
+    private final int defaultTextColor;
+    private final int deactivatedTextColor;
+    private boolean greyStatus;
 
     /**
      * Initialize class.
@@ -92,12 +88,12 @@ public class InvestigationViewManager {
             itemView = (RelativeLayout)inflater.inflate(R.layout.view_item, evidenceList, false);
 
             // Textview
-            textview = (TextView)itemView.findViewById(R.id.evidenceListString);
+            textview = itemView.findViewById(R.id.evidenceListString);
             textview.setText(ev);
             textview.setVisibility(View.VISIBLE);
 
             // Switch
-            switchview = (Switch)itemView.findViewById(R.id.evSwitch);
+            switchview = itemView.findViewById(R.id.evSwitch);
             switchview.setOnCheckedChangeListener((compoundButton, isChecked) -> {
                 RelativeLayout evidenceLayout;
                 TextView evidenceTextview;
@@ -156,8 +152,7 @@ public class InvestigationViewManager {
 
         /* Need to manually set the layout parameters for each evidence
            that is added to the ghost's ui list of evidences. */
-        layoutParams = new LinearLayout.LayoutParams(0,
-                                LinearLayout.LayoutParams.WRAP_CONTENT,1);
+        layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT,1);
 
         // Add each ghost back in as a default state
         inflater = activity.getLayoutInflater();
@@ -166,13 +161,13 @@ public class InvestigationViewManager {
             itemView = (RelativeLayout)inflater.inflate(R.layout.view_item, ghostList, false);
 
             // Textview for ghost name
-            textview = (TextView)itemView.findViewById(R.id.ghostListName);
+            textview = itemView.findViewById(R.id.ghostListName);
             textview.setText(ghost.getName());
             textview.setVisibility(View.VISIBLE);
 
             // Textviews for evidences
             evidences = ghost.getEvidence();
-            ghostEvidenceList = (LinearLayout)itemView.findViewById(R.id.ghostEvRow);
+            ghostEvidenceList = itemView.findViewById(R.id.ghostEvRow);
             for (String ev : evidences) {
 
                 textview = (TextView)inflater.inflate(R.layout.ghost_evidence_textview, null);
@@ -214,7 +209,7 @@ public class InvestigationViewManager {
 
     private void setevColor(RelativeLayout itemView){
         TextView textColor;
-        textColor = (TextView)itemView.findViewById(R.id.evidenceListString);
+        textColor = itemView.findViewById(R.id.evidenceListString);
         if (greyStatus) {
             textColor.setTextColor(deactivatedTextColor);
         }

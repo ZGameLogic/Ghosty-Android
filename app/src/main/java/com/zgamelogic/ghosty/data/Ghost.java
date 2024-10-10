@@ -33,12 +33,12 @@ public class Ghost {
         this.name = name;
         this.description = description;
         this.id = id;
-        this.evidence = new HashSet<String>(evidence);
+        this.evidence = new HashSet<>(evidence);
         uiItem = null;
     }
 
     public Ghost() {
-        evidence = new HashSet<String>();
+        evidence = new HashSet<>();
         uiItem = null;
     }
 
@@ -48,10 +48,10 @@ public class Ghost {
      * @return Collection of evidence still needed to be gathered
      */
     public LinkedList<String> remainingEvidence(Collection<String> selectedEvidence){
-        LinkedList<String> ghostEvidence = new LinkedList<String>();
+        LinkedList<String> ghostEvidence = new LinkedList<>();
         for (String ev : evidence) {
             if (!selectedEvidence.contains(ev)) {
-                ghostEvidence.add(new String(ev));
+                ghostEvidence.add(ev);
             }
         }
         return ghostEvidence;
