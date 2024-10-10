@@ -102,7 +102,7 @@ public class InvestigationViewManager {
                 Log.i(LOG_IVM, "Clicked");
 
                 evidenceLayout = (RelativeLayout) compoundButton.getParent();
-                evidenceTextview = (TextView) evidenceLayout.findViewById(R.id.evidenceListString);
+                evidenceTextview = evidenceLayout.findViewById(R.id.evidenceListString);
                 evidence = (String) evidenceTextview.getText();
 
                 // Update list of selected evidences
