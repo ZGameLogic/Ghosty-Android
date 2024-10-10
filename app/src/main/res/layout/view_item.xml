@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/view_item_background"
+    style="@style/ViewItem">
+
+    <!--
+    Begin evidence list elements
+    -->
+
+    <Switch
+        android:id="@+id/evSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:checked="false"
+        android:showText="false"
+        android:visibility="gone"
+        android:trackTintMode="src_over"
+        android:trackTint="@color/white"
+        android:theme="@style/ViewItem"
+        />
+
+
+    <!--evidenceListString is the text for the individual evidences in the evidence view-->
+    <TextView
+        android:id="@+id/evidenceListString"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="evidence view"
+        android:textAlignment="center"
+        android:visibility="gone"
+        style="@style/ViewItem"/>
+
+    <!--
+    Begin ghost list elements
+    -->
+
+    <!-- Name of ghost -->
+    <TextView
+        android:id="@+id/ghostListName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="evidence view"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:visibility="gone"
+        style="@style/ViewItem"/>
+
+    <!-- Variable textviews specifying this ghost's evidence types
+           all children and their styles are from "ghost_evidence_textview.xml"
+    -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ghostListName"
+        android:id="@+id/ghostEvRow"
+        android:visibility="gone"
+        style="@style/ViewItemSecondary">
+
+    </LinearLayout>
+
+</RelativeLayout>
