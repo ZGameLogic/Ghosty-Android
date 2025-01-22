@@ -1,10 +1,12 @@
 package com.zgamelogic.ghosty.data;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.view.View;
+import android.widget.RelativeLayout;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
@@ -16,7 +18,9 @@ public class Ghost {
     private String name;
     private String description;
     private int id;
-    private LinkedList<String> evidence;
+    private final HashSet<String> evidence;
+    @JsonIgnore
+    private RelativeLayout uiItem; // The xml element representing this ghost
 
     /**
      * Construct a ghost with a name, description, id, and evidence
@@ -29,33 +33,27 @@ public class Ghost {
         this.name = name;
         this.description = description;
         this.id = id;
-        this.evidence = evidence;
+        this.evidence = new HashSet<>(evidence);
+        uiItem = null;
     }
 
-    /**
-     * Construct a ghost using a JSON object
-     * @param json json object with keys: id (int), name (string), description (string), evidence (string array)
-     * @throws JSONException
-     */
-    public Ghost(JSONObject json) throws JSONException {
-        id = json.getInt("id");
-        name = json.getString("name");
-        description = json.getString("description");
-        JSONArray jsonEvidences = json.getJSONArray("evidence");
-        evidence = new LinkedList<>();
-        for(int i = 0; i < jsonEvidences.length(); i++){
-            evidence.add(jsonEvidences.getString(i));
-        }
+    public Ghost() {
+        evidence = new HashSet<>();
+        uiItem = null;
     }
 
     /**
      * This method returns the remaining evidence needed to identify the ghost as this ghost
-     * @param currentEvidence The evidence currently already gathered
+     * @param selectedEvidence The evidence currently already gathered
      * @return Collection of evidence still needed to be gathered
      */
-    public LinkedList<String> remainingEvidence(Collection<String> currentEvidence){
-        LinkedList<String> ghostEvidence = (LinkedList<String>) evidence.clone();
-        ghostEvidence.removeAll(currentEvidence);
+    public LinkedList<String> remainingEvidence(Collection<String> selectedEvidence){
+        LinkedList<String> ghostEvidence = new LinkedList<>();
+        for (String ev : evidence) {
+            if (!selectedEvidence.contains(ev)) {
+                ghostEvidence.add(ev);
+            }
+        }
         return ghostEvidence;
     }
 
@@ -65,7 +63,12 @@ public class Ghost {
      * @return true if the ghost can still be a possible outcome
      */
     public boolean isValid(Collection<String> currentEvidence){
-        return evidence.containsAll(currentEvidence);
+        for (String ev : currentEvidence) {
+            if (!evidence.contains(ev)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public String toString(){
@@ -100,7 +103,50 @@ public class Ghost {
      * Gets a list of evidence of for the ghost
      * @return evidence for the ghost
      */
-    public LinkedList<String> getEvidence() {
+    public HashSet<String> getEvidence() {
         return evidence;
+    }
+
+    /**
+     * Get the xml element for this ghost.
+     * @return RelativeLayout for this ghost on the UI, or null.
+     */
+    public RelativeLayout getUiItem() {
+        return uiItem;
+    }
+
+    /**
+     * Save the xml element for this ghost to this object.
+     * @param uiItem the RelativeLayout for this ghost in the UI.
+     */
+    public void setUiItem(RelativeLayout uiItem) {
+        this.uiItem = uiItem;
+    }
+
+    /**
+     * Update the visibility of this ghost's UI item based on the user
+     * selected evidences.
+     * @param selectedEvidences list of evidences that the user has currently
+     *                          selected.
+     * @return true if ghost is a candidate.
+     */
+    public boolean updateVisibility(Collection<String> selectedEvidences) {
+        boolean isVisible;
+        boolean shouldBeVisible;
+
+        // Determine if currently visible
+        isVisible = uiItem.getVisibility() == View.VISIBLE;
+        //Log in order to figure out if uiItem is affecting the visibility of all ghosts.
+
+        // Determine if ghost should be visible
+        shouldBeVisible = isValid(selectedEvidences);
+
+        // Update visibility if necessary
+        if (shouldBeVisible && !isVisible) {
+            uiItem.setVisibility(View.VISIBLE);
+        } else if (!shouldBeVisible && isVisible) {
+            uiItem.setVisibility(View.GONE);
+        }
+        return shouldBeVisible;
     }
 }

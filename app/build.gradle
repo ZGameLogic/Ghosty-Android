@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.zgamelogic.ghosty"
-        minSdk 21
-        targetSdk 32
+        minSdk 23
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -25,6 +25,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // This is necessary fix to avoid this error: :app:transformResourcesWithMergeJavaResForDebug
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
 }
 
 dependencies {
@@ -32,11 +37,14 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.4'
-    implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.1.3'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.0.1'
+    implementation group: 'org.htmlunit', name: 'htmlunit3-android', version: '3.5.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     testImplementation 'org.json:json:20140107'
 }
+
+
+
